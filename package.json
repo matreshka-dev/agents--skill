@@ -1,0 +1,6 @@
+{
+  "name": "@matreshka/agents--skill",
+  "private": true,
+  "description": "Agent Skills для разработки на Matreshka BFF (Cursor и другие агенты)",
+  "type": "module"
+}

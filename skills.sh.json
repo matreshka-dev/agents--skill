@@ -1,0 +1,18 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "groupings": [
+    {
+      "title": "Matreshka BFF",
+      "description": "Паттерны UI, Context, ContextRef и оформление кода в проектах Matreshka.",
+      "skills": [
+        "context-init-in-boot",
+        "context-ref-in-strings",
+        "prefer-context-ref-in-ui",
+        "strict-context-ref",
+        "flex-item-in-stack",
+        "register-color-tokens",
+        "format-after-code"
+      ]
+    }
+  ]
+}
