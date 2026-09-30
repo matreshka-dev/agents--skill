@@ -11,6 +11,12 @@
         "strict-context-ref",
         "flex-item-in-stack",
         "register-color-tokens",
+        "form-submit-shared-handler",
+        "prevent-duplicate-form-submit",
+        "return-server-action-promise",
+        "table-layout-with-grid-subgrid",
+        "safe-area-with-fixed-flex-item",
+        "safe-area-for-page-dialog-overlays",
         "format-after-code"
       ]
     }
