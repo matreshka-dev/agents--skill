@@ -41,7 +41,7 @@ async boot(): Promise<unknown> {
 
 После `init()` при необходимости можно синхронно поправить данные в контексте (дефолты, нормализация) — всё ещё внутри `boot()`, до `serialize()`.
 
-Привязку `Context` к entry (lifecycle, destroy) оформляй по принятому в **текущем** проекту паттерну.
+Привязку `Context` к entry на выходе (destroy по `stopUsing$`) — скилл **`context-destroy-with-entry`**.
 
 ## Чеклист агента
 
