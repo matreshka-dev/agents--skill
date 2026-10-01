@@ -34,6 +34,7 @@ npx skills add . --agent cursor
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------- |
 | `context-init-in-boot`               | `await context.init()` в `boot()` до рендера, использующего `context.value()`                           |
 | `context-destroy-with-entry`         | `context.destroy()` по `stopUsing$` entry (Page/Dialog), чтобы контекст не переживал страницу/диалог    |
+| `client-scoped-context-for-shared-ui` | Сессионные данные chrome (badge, корзина) в одном Context на Client, не в каждом переиспользуемом виджете |
 | `context-ref-in-strings`             | `ContextRef` в шаблонных строках (`toString()`, `strictRef`)                                            |
 | `prefer-context-ref-in-ui`           | `ContextRef` вместо `value()` в props UI для реактивности на клиенте                                    |
 | `strict-context-ref`                 | Типизация `ContextRef<T>` вместо `ContextRef<any, any>`                                                 |
