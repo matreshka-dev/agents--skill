@@ -2,22 +2,56 @@
   "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
   "groupings": [
     {
-      "title": "Matreshka BFF",
-      "description": "Паттерны UI, Context, ContextRef и оформление кода в проектах Matreshka.",
+      "title": "Context и состояние",
+      "description": "Context, ContextRef, lifecycle, storage, валидация.",
       "skills": [
         "context-init-in-boot",
+        "context-destroy-with-entry",
+        "client-scoped-context-for-shared-ui",
         "context-ref-in-strings",
         "prefer-context-ref-in-ui",
         "strict-context-ref",
-        "flex-item-in-stack",
-        "register-color-tokens",
+        "storage-vs-context",
+        "context-subscribe-take-until-destroy",
+        "context-zod-draft-not-live-strict",
+        "emit-after-in-place-mutation"
+      ]
+    },
+    {
+      "title": "Компоненты, условия, списки",
+      "description": "Entry lifecycle, rules, forEach, conditions, instances.",
+      "skills": [
+        "entry-lifecycle-on-enter-leave",
+        "rules-not-conditions-for-loading-ui",
+        "foreach-stable-track",
+        "when-oneof-vs-when-any",
+        "create-instance-before-serialize",
+        "register-color-tokens"
+      ]
+    },
+    {
+      "title": "События, формы, навигация",
+      "description": "Handlers, формы, link, router, dialog/popover.",
+      "skills": [
         "form-submit-shared-handler",
         "prevent-duplicate-form-submit",
         "return-server-action-promise",
-        "table-layout-with-grid-subgrid",
+        "instant-ui-set-context-value",
+        "link-vs-navigate",
+        "route-guard-return-undefined",
+        "dialog-vs-popover-platform"
+      ]
+    },
+    {
+      "title": "Layout и overlays",
+      "description": "Flex, safe area, grid, RTL, overlays страницы.",
+      "skills": [
+        "flex-item-in-stack",
+        "layout-start-end-not-left-right",
         "safe-area-with-fixed-flex-item",
         "safe-area-for-page-dialog-overlays",
-        "format-after-code"
+        "table-layout-with-grid-subgrid",
+        "page-overlays-method-vs-set-overlays"
       ]
     }
   ]

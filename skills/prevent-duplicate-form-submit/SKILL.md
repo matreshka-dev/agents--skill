@@ -87,6 +87,8 @@ return form(
 - [ ] Один список действий используется в `form.onSubmit` и `button.onClick`
 - [ ] Поля и кнопка находятся внутри `form`
 
-## Связанный скилл
+## Связанные скиллы
 
-- [form-submit-shared-handler](../form-submit-shared-handler/SKILL.md) — общий сценарий подтверждения для `onSubmit` формы и `onClick` кнопки
+- **`form-submit-shared-handler`** — общий handler для `onSubmit` и `onClick`
+- **`instant-ui-set-context-value`** — зачем первым идёт `setContextValue`
+- **`rules-not-conditions-for-loading-ui`** — текст «Отправляем…» через `rules`

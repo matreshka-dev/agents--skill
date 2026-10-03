@@ -1,71 +1,116 @@
 ---
 name: context-init-in-boot
 description: >-
-  Initializes Matreshka BFF Context in entry component boot() before render
-  methods read context.value() in content/overlays. Use when adding Page or
-  Dialog with Context, editing content() that uses context data, or fixing
-  getValue / context not loaded errors during serialize.
+  Chooses Matreshka BFF Context preload, lazy init, or await context.init() in
+  entry boot() when content/overlays use context.value(); refs-only UI often
+  skips manual init. Use for Page/Dialog Context, serialize getValue errors, or
+  designing context loading.
 ---
 
-# Инициализация контекста в `boot()` (entry component)
+# Инициализация `Context` на entry (Matreshka BFF)
 
-## Когда нужно
+## Три режима
 
-Если в **методах рендера** entry-component (например `content()`, переопределённый метод с деревом страницы, `overlays()`) вызывается:
+| Режим | Настройка | Когда |
+| --- | --- | --- |
+| **Lazy** | только `data` | По умолчанию; первый запрос клиента к контексту |
+| **Preload** | `preload: true` | Данные нужны сразу при авторизации клиента |
+| **Ручной `init()`** | `await this.context.init()` в `boot()` | Сервер строит `content()` / `overlays()` через **`value()`** или ветки от загруженных данных |
 
-- `this.context.value(...)` или чтение данных для ветвления (`if`, spread `...`);
-- построение дерева, зависящее от уже загруженных полей контекста (не только `ref` в props);
+### Практическое правило
 
-то контекст должен быть **загружен до сериализации** через `await this.context.init()` в **`boot()`**.
+- UI только на **`ref()`** + **`when.*`** → часто **без** ручного `init()` в `boot()` (lazy или preload по смыслу).
+- **`context.value()`**, spread массива, `if` от данных в **`content()`** / **`overlays()`** → **`await context.init()` в `boot()`** (обязательно).
+
+Корзина/badge на всех маршрутах — **`client-scoped-context-for-shared-ui`**, не дублируй `init()` в каждом виджете.
+
+## Когда нужен `init()` в `boot()`
+
+Если в **методах рендера** entry (`content()`, `overlays()`) вызывается:
+
+- `this.context.value(...)` или ветвление (`if`, spread);
+- построение дерева от уже загруженных полей (не только `ref` в props);
+
+контекст должен быть **загружен до сериализации** через `await this.context.init()` в **`boot()`**.
 
 ## Почему так
 
-Порядок при открытии страницы (серверный bootstrap Matreshka, `bootServerComponents`):
+Порядок при открытии страницы (`bootServerComponents`):
 
 1. `await page.boot()`
-2. `page.serialize()` → при первом обращении к `properties` вызывается `initProperties()` → **метод рендера (`content()` и т.п.)**
+2. `page.serialize()` → `initProperties()` → **рендер (`content()` и т.п.)**
 
-Рендер **не** вызывается в конструкторе страницы, но вызывается **до** ответа клиенту и **после** `boot()`. Без `init()` в `boot()` у `context.value()` нет `data$` → ошибки вроде `Cannot read properties of undefined (reading 'getValue')`.
+Без `init()` в `boot()` у `context.value()` нет `data$` → ошибки вроде `Cannot read properties of undefined (reading 'getValue')`. Подробности — JSDoc у `Context.init()` в `@matreshka/bff/core`.
 
-Подробности — JSDoc у `Context.init()` в `@matreshka/bff/core`.
-
-## Шаблон (Page и другие entry)
+## Шаблон `boot()`
 
 ```typescript
-async boot(): Promise<unknown> {
+override async boot(): Promise<unknown> {
   await super.boot();
   await this.context.init();
   return;
 }
 ```
 
-После `init()` при необходимости можно синхронно поправить данные в контексте (дефолты, нормализация) — всё ещё внутри `boot()`, до `serialize()`.
+После `init()` можно синхронно нормализовать данные в `boot()`, до `serialize()`.
 
-Привязку `Context` к entry на выходе (destroy по `stopUsing$`) — скилл **`context-destroy-with-entry`**.
+Привязка `Context` к entry на выходе — **`context-destroy-with-entry`**.
 
-## Чеклист агента
+## Примеры
 
-- [ ] У entry-component есть `Context` и в рендер-методе используется `context.value` или логика от загруженных данных
-- [ ] В `boot()` есть `await this.context.init()` (и `await super.boot()` первым, если переопределяете `boot`)
-- [ ] Асинхронная загрузка остаётся в `Context` (`data` / `initDataCallback`), а не дублируется в `content()`
+```typescript
+// Lazy + refs — init в boot не обязателен
+protected content() {
+  return [
+    textInput(this.context.ref("name")),
+    text(
+      {
+        conditions: [when.notEquals(this.context.ref("greeting"), "")],
+      },
+      `Значение: ${this.context.ref("greeting").toString()}`,
+    ),
+  ];
+}
+```
 
-## Когда можно без `value()` в рендере
+```typescript
+// value в рендере — init обязателен
+protected content() {
+  const items = this.context.value("items");
+  return items.length ? [forEach({ /* … */ })] : [text("Пусто")];
+}
+```
 
-Если UI строится только на **`this.context.ref(...)`** и **`when.*`** (условия на клиенте), часто достаточно корректного `Context` и `preload`, но при любых **`context.value` в рендере** — **`init()` в `boot()` обязателен**.
-
-**Без `value` в рендере:** ветки через `when.equals(someRef, …)` и refs в props — данные подтягиваются на клиенте по условиям.
-
-**С `value` в рендере:** списки/spread от `context.value('items')`, флаги для `if`/`...` от `value` — нужны `boot` + `init`.
+```typescript
+context = new Context({
+  preload: true,
+  data: async () => ({ cart: [] }),
+});
+```
 
 ## Антипаттерн
 
 ```typescript
 protected content() {
-  const items = this.context.value('items'); // ❌ без await context.init() в boot()
+  const items = this.context.value("items"); // ❌ без await context.init() в boot()
   return items.length ? [...] : [...];
 }
 ```
 
+Не дублируй загрузку `data` внутри `content()`.
+
 ## Dialog
 
-Тот же принцип для entry-диалогов с `Context`: перед сериализацией содержимого — **`await context.init()` в `boot()`** (или эквивалентный lifecycle entry), если рендер читает `value`.
+Тот же принцип для entry-диалогов с `Context`: **`await context.init()` в `boot()`**, если рендер читает `value`.
+
+## Чеклист агента
+
+- [ ] `value()` в рендер-методах entry → `init()` в `boot()`
+- [ ] Только refs/conditions → lazy или preload; без лишнего `init()`
+- [ ] `await super.boot()` первым при переопределении `boot`
+- [ ] Асинхронная загрузка в `Context.data`, не в `content()`
+
+## Связанные скиллы
+
+- **`prefer-context-ref-in-ui`** — когда обойтись без `value()` в рендере
+- **`context-destroy-with-entry`** — destroy при уходе entry
