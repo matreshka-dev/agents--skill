@@ -1,18 +1,21 @@
 ---
 name: strict-context-ref
 description: >-
-  Types Matreshka BFF ContextRef strictly instead of ContextRef any any. Use
-  when adding context refs, forEach generators, shared UI helpers taking refs,
-  or fixing TS errors on ref value and nested ref paths.
+  Types Matreshka BFF ContextRef with context and path on pages—avoid ContextRef
+  any any, explicit page context types, forEach generator refs. Use when
+  defining Page/Dialog context, context.ref paths, or nested ref in lists. For
+  shared function parameters by value type only, use context-value-ref-in-api.
 ---
 
 # Строгая типизация `ContextRef` (Matreshka BFF)
 
 ## Зачем
 
-`ContextRef<any, any>` отключает связь ref с полями контекста. TypeScript **не знает**, что лежит в `value()` и какие строки допустимы в `ref('…')` — появляются предупреждения, `any` в генераторах `forEach`, опечатки в путях не ловятся.
+`ContextRef<any, any>` отключает связь ref с полями контекста. TypeScript **не знает**, что лежит в `value()` и какие строки допустимы в `ref('…')` — опечатки в путях не ловятся, в `forEach` пропадает тип элемента.
 
-**По возможности** не используй `ContextRef<any, any>` в сигнатурах компонентов и хелперов BFF.
+**Не используй `ContextRef<any, any>`** в публичных сигнатурах без веской причины.
+
+> **Shared-хелперы и методы**, где важен только тип значения, а не контекст/путь — см. скилл **[context-value-ref-in-api](../context-value-ref-in-api/SKILL.md)** (`ContextValueRef`, `ContextArrayRef`).
 
 ## Базовый случай: ref со страницы
 
@@ -23,64 +26,56 @@ this.context.ref('history'); // ContextRef<MyContext, 'history'>
 this.context.ref('message'); // ContextRef<MyContext, 'message'>
 ```
 
-Передавай такой ref в функции **без приведения к `any`**. Тип контекста страницы (`MyContext`) описывает поля явно.
+Передавай такой ref **без приведения к `any`**. Тип контекста страницы (`MyContext`) описывает поля явно.
 
-## Общий компонент / хелпер
+## Когда нужен именно `ContextRef<C, P>`
 
-Если ref приходит параметром, зафиксируй **тип значения по пути**, а не `any`:
+- Описание поля на **конкретной** странице или alias `ContextRef<ChatRoomContext, 'message'>`
+- Generic с constraint: `<C extends JsonObject>(ref: ContextRef<C, 'message'>)` — если имя поля фиксировано во всех `C`
+- В **`forEach` generator** тип item ref выводится из ref списка; не подменяй `{ ref: any }`
 
-### Одно поле (строка, число, флаг)
+## Массивы и `forEach`
 
-```typescript
-type MessageRef<C extends JsonObject, K extends Paths<C>> = ContextRef<C, K>;
-// или проще для одного контекста:
-type ComposerMessageRef = ContextRef<ChatRoomContext, 'message'>;
-```
+На **call site** ref списка остаётся строгим: `this.context.ref('messages')`.
 
-Можно обобщить компонент: `<C extends JsonObject>(messageRef: ContextRef<C, 'message'>)` — если поле всегда называется одинаково и есть constraint на `C`.
+В **сигнатуре shared-хелпера** — `ContextArrayRef<ItemType>` (скилл **context-value-ref-in-api**).
 
-### Массив для `forEach`
+В конфиге `forEach`:
 
-Используй типы из **`forEach`**:
-
-- **`ForEachDataRef<ItemType>`** — ref на массив элементов `ItemType`
-- **`CompatibleForEachRef<…>`** — ref действительно указывает на массив (совместим с `forEach`)
+- **`CompatibleForEachRef<R>`** — ref действительно указывает на массив
 
 ```typescript
-export type ChatHistoryListRef = CompatibleForEachRef<
-  ForEachDataRef<ChatHistoryItem>
->;
-
-export function chatHistoryList(historyRef: ChatHistoryListRef) { … }
+new ForEach({
+  ref: this.context.ref('messages'),
+  track: (message) => message.id,
+  generator: ({ ref: itemRef }) => {
+    itemRef.ref('text'); // пути проверяются по типу элемента
+  },
+});
 ```
-
-В `generator: ({ ref: itemRef }) => …` тип элемента и вложенных `itemRef.ref('text')` выводится из `ItemType`.
-
-### Вложенные поля элемента
-
-Не аннотируй `{ ref: any }` — достаточно строгого ref списка; тип item ref приходит из **`ForEachGeneratorProperties`**.
 
 ## Полезные типы BFF
 
 | Тип | Назначение |
 |-----|------------|
-| `ContextRef<C, P>` | Ref на поле `P` контекста `C` |
+| `ContextRef<C, P>` | Ref на поле `P` контекста `C` (страница, dialog) |
 | `ContextRefValue<R>` | Тип **значения** по ref `R` |
-| `ForEachDataRef<T>` | Ref на `T[]` |
-| `CompatibleForEachRef<R>` | Ref на массив для `forEach` |
+| `ContextValueRef<V>` | Ref с известным `V` без фиксации `C`/`P` — **сигнатуры API** |
+| `ContextArrayRef<T>` | Ref на `T[] \| undefined` |
+| `CompatibleForEachRef<R>` | Call site: ref на массив для `forEach` |
+| `CompatibleContextValueRef<V, R>` | Call site: ref `R` совместим со значением `V` |
 
 ## Чеклист агента
 
-- [ ] В новых параметрах нет `ContextRef<any, any>` без причины
-- [ ] Для списков — `ForEachDataRef` + `CompatibleForEachRef` (или alias поверх них)
-- [ ] Для полей страницы — ref из `context.ref('…')` или alias `ContextRef<MyContext, 'field'>`
+- [ ] Нет `ContextRef<any, any>` в новых параметрах без причины
+- [ ] Shared-функция по **типу значения** — `ContextValueRef` / `ContextArrayRef`, не этот скилл вместо того
+- [ ] Тип контекста страницы/диалога явный (`type XContext = { … }`)
 - [ ] В `forEach` generator не типизировать ref как `any`
-- [ ] Тип контекста страницы/диалога описан явно (`type XContext = { … }`), без лишнего `JsonObject &`
+- [ ] Списки на call site — `context.ref('…')`; при необходимости `CompatibleForEachRef`
 
 ## Когда `any` ещё допустим
 
-- Временный прототип с последующим сужением типа
-- Граница с кодом, который **ещё** не типизирован (лучше сузить в следующем шаге)
+- Временный прототип с последующим сужением
 - Внутренности фреймворка BFF, не публичные API приложения
 
 ## Антипаттерн
@@ -97,4 +92,4 @@ function userMultiSelect(usersRef: ContextRef<any, any>, …) {
 
 ## Ориентир
 
-Предпочитай **alias** (`ChatHistoryListRef`, `ComposerMessageRef`) в модуле компонента — call site остаётся `this.context.ref('history')`, проверка типов на стыке ref ↔ компонент.
+На странице — **alias** `ContextRef<MyContext, 'field'>` или вывод из `context.ref('…')`. В общем API — **context-value-ref-in-api**.

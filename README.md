@@ -39,7 +39,8 @@ npx skills add . --agent cursor
 | `client-scoped-context-for-shared-ui` | Один Context на Client для chrome (badge, корзина) |
 | `context-ref-in-strings` | `ContextRef` в шаблонных строках (`toString()`, `strictRef`) |
 | `prefer-context-ref-in-ui` | `ContextRef` в props UI вместо `value()` |
-| `strict-context-ref` | Типизация `ContextRef<T>` |
+| `strict-context-ref` | `ContextRef<C, P>` на странице, без `any` |
+| `context-value-ref-in-api` | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов |
 | `storage-vs-context` | Клиентский `storage` vs состояние сценария в `Context` |
 | `context-subscribe-take-until-destroy` | `data$` с `takeUntil(destroy$)` на entry |
 | `context-zod-draft-not-live-strict` | Zod: draft vs strict на живом вводе |

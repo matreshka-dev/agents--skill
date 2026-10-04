@@ -11,6 +11,7 @@
         "context-ref-in-strings",
         "prefer-context-ref-in-ui",
         "strict-context-ref",
+        "context-value-ref-in-api",
         "storage-vs-context",
         "context-subscribe-take-until-destroy",
         "context-zod-draft-not-live-strict",

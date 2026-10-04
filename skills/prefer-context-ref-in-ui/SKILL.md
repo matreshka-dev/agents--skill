@@ -83,5 +83,6 @@ onSubmit: () => {
 ## Связанные скиллы
 
 - [context-ref-in-strings](../context-ref-in-strings/SKILL.md) — ref в шаблонных строках
-- [strict-context-ref](../strict-context-ref/SKILL.md) — типы ref в общих компонентах
+- [strict-context-ref](../strict-context-ref/SKILL.md) — `ContextRef<C, P>` на странице
+- [context-value-ref-in-api](../context-value-ref-in-api/SKILL.md) — `ContextValueRef` в параметрах хелперов
 - [context-init-in-boot](../context-init-in-boot/SKILL.md) — когда рендер всё же читает `value()`
