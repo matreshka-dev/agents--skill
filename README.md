@@ -73,6 +73,7 @@ npx skills add . --agent cursor
 | Скилл | Назначение |
 | --- | --- |
 | `flex-item-in-stack` | `flexItem` внутри flex-родителей Stack |
+| `logical-px-for-bff-dimensions` | Числа размеров на BFF = логические px; на клиенте → rem |
 | `layout-start-end-not-left-right` | `Start`/`End`, RTL-safe якоря и safe area |
 | `safe-area-with-fixed-flex-item` | Safe area и фиксированный `flexItem.basis` |
 | `safe-area-for-page-dialog-overlays` | Safe area в Page/Dialog/overlays |

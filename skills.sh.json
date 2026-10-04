@@ -47,6 +47,7 @@
       "description": "Flex, safe area, grid, RTL, overlays страницы.",
       "skills": [
         "flex-item-in-stack",
+        "logical-px-for-bff-dimensions",
         "layout-start-end-not-left-right",
         "safe-area-with-fixed-flex-item",
         "safe-area-for-page-dialog-overlays",
