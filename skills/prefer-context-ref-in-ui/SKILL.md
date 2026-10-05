@@ -59,14 +59,16 @@ forEach({
 
 **Не** в props «показать/редактировать поле», а там, где нужно **решение на BFF** в момент вызова:
 
-- **`onClick` / `onSubmit` / сервисы** — прочитать, посчитать, вызвать API, `setValue`
+- **`onClick` / `onSubmit` / сервисы** — прочитать, посчитать, вызвать API; если ref на поле уже есть — **`ref.setValue(...)`**, иначе `context.setValue("path", …)` (см. [context-value-ref-in-api](../context-value-ref-in-api/SKILL.md))
 - **Структура дерева** — разный набор блоков от длины списка, роли, feature-flag (тогда часто нужен `await context.init()` в `boot()` — скилл [context-init-in-boot](../context-init-in-boot/SKILL.md))
 - **`boot()`** — нормализация данных до первой сериализации
 
 ```typescript
+const greetingRef = this.context.ref("greeting");
+
 onSubmit: () => {
-  const name = this.context.value("name"); // ✅ логика submit
-  this.context.setValue("greeting", `Привет, ${name}`);
+  const name = this.context.value("name"); // ✅ логика submit, ref на name не обязателен
+  greetingRef.setValue(`Привет, ${name}`); // ✅ запись через ref, если он уже создан
 };
 ```
 

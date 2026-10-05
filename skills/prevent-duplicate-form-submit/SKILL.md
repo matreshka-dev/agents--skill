@@ -18,7 +18,7 @@ description: >-
 3. Добавляй серверному действию условие `when.equals(loadingRef, false)`.
 4. После завершения операции возвращай флаг в `false`, включая сценарий ошибки.
 
-Условие обязательно должно находиться на `ServerAction`: визуальная смена состояния кнопки сама по себе не предотвращает повторный запрос.
+Условие на `ServerAction` нужно для **клиента**: без него interaction уйдёт на BFF повторно. Визуальная смена состояния кнопки сама по себе не предотвращает повторный запрос. BFF не повторяет `conditions` — для идемпотентности и auth см. **`server-action-validate-in-handler`**.
 
 ## Шаблон
 
@@ -35,7 +35,7 @@ const submitForm = [
           this.context.value("password"),
         );
       } finally {
-        this.context.setValue("loading", false);
+        loadingRef.setValue(false);
       }
     },
     {
@@ -83,7 +83,7 @@ return form(
 - [ ] В `Context` есть булевый флаг отправки со значением `false` по умолчанию
 - [ ] Первое действие подтверждения — `setContextValue(flagRef, true)`
 - [ ] `ServerAction` имеет `conditions: [when.equals(flagRef, false)]`
-- [ ] Флаг сбрасывается после успеха и ошибки
+- [ ] Флаг сбрасывается после успеха и ошибки (`loadingRef.setValue(false)` в `finally`, не дублируй путь через `context.setValue`)
 - [ ] Один список действий используется в `form.onSubmit` и `button.onClick`
 - [ ] Поля и кнопка находятся внутри `form`
 
@@ -91,4 +91,5 @@ return form(
 
 - **`form-submit-shared-handler`** — общий handler для `onSubmit` и `onClick`
 - **`instant-ui-set-context-value`** — зачем первым идёт `setContextValue`
+- **`context-value-ref-in-api`** — запись через `ref.setValue`, когда ref уже в scope
 - **`rules-not-conditions-for-loading-ui`** — текст «Отправляем…» через `rules`
