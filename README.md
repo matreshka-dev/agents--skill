@@ -64,6 +64,7 @@ npx skills add . --agent cursor
 | `form-submit-shared-handler` | Общий handler для `onSubmit` и `onClick` |
 | `prevent-duplicate-form-submit` | `loading` + `setContextValue` + conditional `ServerAction` |
 | `return-server-action-promise` | Return/await Promise в server handlers |
+| `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте |
 | `instant-ui-set-context-value` | `setContextValue` / toggle для мгновенного UI |
 | `link-vs-navigate` | `link.value` vs `navigate()` в `onClick` |
 | `route-guard-return-undefined` | Guard через `undefined` и fallback `**` |
