@@ -1,25 +1,33 @@
 ---
 name: server-action-validate-in-handler
 description: >-
-  Matreshka BFF action conditions run only on the client to skip local actions
-  and avoid extra server messages; they are not a secure business-rule gate.
-  Use when adding ServerAction, action conditions, or reviewing auth and
-  invariants in server handlers.
+  Matreshka BFF action conditions run only on the client; the client sends
+  handlers field for dispatch. Use when adding ServerAction,
+  action conditions, or reviewing auth and invariants in server handlers.
 ---
 
 # Проверки в серверном обработчике (Matreshka BFF)
 
 ## Правило
 
-`conditions` у действия (`LocalAction`, `ServerAction`, анимации и т.д.) проверяются **только на клиенте**. Они нужны только для того, чтобы не слать лишние сообщения на сервер и не выполнять лишние клиентские действия, и **не являются безопасной стратегией проверки бизнес-условий**.
+`conditions` у действия (`LocalAction`, `ServerAction`, анимации и т.д.) проверяются **только на клиенте**. Они нужны, чтобы не слать лишние сообщения на сервер и не выполнять лишние клиентские действия, и **не являются безопасной стратегией проверки бизнес-условий**.
 
 Проверки нужно добавлять в **серверный обработчик**, а не доверять контексту: контекст может быть неактуальным на момент срабатывания обработчика или, в случае нестрогих правил валидации контекста, быть изменённым злоумышленником.
+
+## Диспетчеризация ServerAction
+
+1. Клиент снимает `conditions` по исходному Context **до** выполнения actions в том же массиве.
+2. Для каждого `server-interaction`, прошедшего фильтр, в сообщение добавляется его **индекс** в `interactions[event][]` (вместе с local actions в том же массиве).
+3. BFF выполняет только `ServerAction` с индексами из `handlers`, **без** повторной проверки conditions.
+4. Если ни один server-handler не прошёл фильтр, interaction на BFF не уходит.
+
+Несколько `ServerAction` на одно событие с разными `conditions` (в том числе взаимоисключающими) — нормальный паттерн: клиент передаёт индексы только прошедших снимок handlers.
 
 ## Что делать в handler
 
 1. Перед side effect (запись, оплата, удаление) проверяй права и инварианты через сервис/API с данными авторизации.
 2. Не считай `this.context.value(...)` достаточным доказательством права на операцию.
-3. Если на одно событие несколько `ServerAction` с взаимоисключающими `conditions`, помни: BFF вызывает **все** handler'ы типа события — в каждом handler нужен явный guard или одна объединённая ветка.
+3. Не полагайся на `conditions` action как на server gate — они только для клиентского снимка и экономии round-trip.
 
 ## Шаблон
 
@@ -37,14 +45,14 @@ new ServerAction(async () => {
 });
 ```
 
-`conditions` на action по-прежнему уместны для UX (не слать interaction, пока `loading === true`), но дублируют **не** security — только оптимизацию клиента.
+`conditions` на action уместны для UX (не слать interaction, пока `loading === true`), но не заменяют проверки в handler.
 
 ## Чеклист агента
 
 - [ ] Бизнес- и auth-проверки в `ServerAction` / сервисе, не только в `conditions`
 - [ ] Не полагаться на Context как на единственный gate для критичных операций
-- [ ] Несколько `ServerAction` на одно событие — guard в каждом handler или один handler
-- [ ] `conditions` у action описаны как клиентская фильтрация, не как server authorization
+- [ ] Несколько `ServerAction` на событие — разные `conditions` на клиенте; guards в handler для критичных операций
+- [ ] `conditions` у action — клиентская фильтрация и снимок, не server authorization
 
 ## Связанные скиллы
 
