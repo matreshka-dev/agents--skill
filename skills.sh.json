@@ -40,7 +40,8 @@
         "instant-ui-set-context-value",
         "link-vs-navigate",
         "route-guard-return-undefined",
-        "dialog-vs-popover-platform"
+        "dialog-vs-popover-platform",
+        "popover-viewport-size-limit"
       ]
     },
     {

@@ -12,10 +12,10 @@ description: >-
 
 ## Правило
 
-| Сценарий | API | Якорь |
-| --- | --- | --- |
-| Подтверждение, отдельный ввод, слой **без** привязки к элементу | `showDialog(new Dialog({ … }))` | нет |
-| Меню/действия **рядом с** кнопкой, карточкой, строкой | `showPopover(instance, new Popover({ … }))` | **instance** из события |
+| Сценарий                                                        | API                                         | Якорь                   |
+| --------------------------------------------------------------- | ------------------------------------------- | ----------------------- |
+| Подтверждение, отдельный ввод, слой **без** привязки к элементу | `showDialog(new Dialog({ … }))`             | нет                     |
+| Меню/действия **рядом с** кнопкой, карточкой, строкой           | `showPopover(instance, new Popover({ … }))` | **instance** из события |
 
 `Popover` всегда привязан к anchor-компоненту на клиенте.
 
@@ -41,10 +41,7 @@ button(
       currentClientPlatform().showPopover(
         instance,
         new Popover({
-          content: [
-            button([text("Редактировать")]),
-            button([text("Удалить")]),
-          ],
+          content: [button([text("Редактировать")]), button([text("Удалить")])],
         }),
       );
     },
@@ -55,6 +52,7 @@ button(
 
 ## Связанные скиллы
 
+- **`popover-viewport-size-limit`** — лимит по экрану, `positionArea`, скролл у потомков
 - **`entry-lifecycle-on-enter-leave`** — `Dialog` / `Popover` как entry
 - **`context-destroy-with-entry`** — Context внутри dialog
 - **`create-instance-before-serialize`** — `instance` якоря popover
