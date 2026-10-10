@@ -6,6 +6,7 @@
       "description": "Context, ContextRef, lifecycle, storage, валидация.",
       "skills": [
         "context-init-in-boot",
+        "context-plan-destroy-on-create",
         "context-destroy-with-entry",
         "client-scoped-context-for-shared-ui",
         "context-ref-in-strings",

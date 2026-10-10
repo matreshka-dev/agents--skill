@@ -8,6 +8,10 @@ description: >-
 
 # Уничтожение контекста при завершении entry (Page / Dialog)
 
+Реализация **entry-scoped** строки из **`context-plan-destroy-on-create`**: данные страницы/диалога уничтожаются на `stopUsing$`.
+
+У **default**-контекста BFF всё равно вызовет `destroy()` при отвязке **последнего** клиента. Привязка к entry — чтобы снять state **раньше** (пока `Client` на BFF ещё жив после навигации), а не ждать disconnect.
+
 ## Правило
 
 Привязать `Context` к **entry-component** (`Page`, `Dialog` и другим корневым компонентам маршрута/модалки) через **`stopUsing$`**: при уходе со страницы или закрытии диалога вызывать **`context.destroy()`**, если контекст ещё не уничтожен (`!context.isDestroyed()`).
@@ -108,5 +112,5 @@ export class LeakyPage extends Page {
 
 ## Замечания
 
-- Авто-`destroy` при отключении **всех** клиентов от контекста — отдельный механизм реестра; привязка к **entry** нужна, когда lifecycle страницы/диалога должен явно завершать контекст, не дожидаясь отвязки клиентов.
+- Auto-`destroy` при last client (default) — см. **`context-plan-destroy-on-create`**; **`persistent: true`** auto-destroy **отключает** — entry destroy не заменяет ручную инвалидацию persistent-кэша.
 - Подписка на `stopUsing$` без `takeUntil` обычно допустима: entry и контекст уничтожаются вместе; если в проекте есть общий стиль отмены подписок — следуй ему, сохраняя вызов `destroy()` в обработчике.

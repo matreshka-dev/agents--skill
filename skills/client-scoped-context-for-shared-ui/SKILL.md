@@ -2,11 +2,12 @@
 name: client-scoped-context-for-shared-ui
 description: >-
   Stores session-wide UI data (badges, counters, cart) in one Context per Client
-  instead of new Context per reusable chrome component. Use for header/shell
-  widgets on many pages, or when the same remote data reloads on every navigation.
+  instead of new Context per reusable shell widget. Use for header/shell on many
+  pages, or when the same remote data reloads on every navigation. Pair with
+  context-plan-destroy-on-create for lifecycle.
 ---
 
-# Client-scoped контекст для общего chrome UI
+# Client-scoped контекст для общего shell UI
 
 ## Правило
 
@@ -25,7 +26,13 @@ description: >-
 - Данные **живут только на маршруте**: список заказов, форма редактирования, деталка сущности.
 - Контекст привязан к **`stopUsing$` страницы/диалога** — см. **`context-destroy-with-entry`**.
 
-Сессионный контекст и page-контекст **дополняют** друг друга: в page-контексте — локальное состояние экрана, в client-scoped — то, что нужно chrome по всему приложению.
+Сессионный контекст и page-контекст **дополняют** друг друга: в page-контексте — локальное состояние экрана, в client-scoped — то, что нужно shell по всему приложению.
+
+**Не** используй **`persistent: true`** для session shell: нужен **один Context на `Client`** (`WeakMap`), память масштабируется с клиентами. `persistent` — **один** контекст на процесс для process-wide данных; см. **`context-plan-destroy-on-create`**.
+
+### Узкая зона приложения (не вся сессия)
+
+Тот же **один Context на `Client`**, но destroy при **уходе с маршрута / раздела** — `destroy…Context()` из route guard или базовой страницы зоны. Подписки — `takeUntil(client.destroy$)`. См. **`context-plan-destroy-on-create`**, **`route-guard-return-undefined`**.
 
 ## Антипаттерн
 
@@ -154,7 +161,7 @@ currentSessionUserContext().setValue('unreadNotifications', 0);
 ## Чеклист агента
 
 - [ ] Данные нужны на **многих маршрутах** одного залогиненного клиента
-- [ ] Нет `new Context` в конструкторе **переиспользуемого** chrome-компонента
+- [ ] Нет `new Context` в конструкторе **переиспользуемого** shell-виджета
 - [ ] Есть getter `current…Context()` с **одним экземпляром на `Client`**
 - [ ] `init()` — в **shell / layout boot**, не в конструкторе виджета
 - [ ] Виджет использует **refs** session context; действия на детальных экранах **пишут** в тот же context

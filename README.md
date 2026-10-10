@@ -35,6 +35,7 @@ npx skills add . --agent cursor
 | Скилл                                  | Назначение                                                   |
 | -------------------------------------- | ------------------------------------------------------------ |
 | `context-init-in-boot`                 | Preload / lazy / `init()` в `boot()` при `value()` в рендере |
+| `context-plan-destroy-on-create`       | План `destroy()`; default auto при last client; `persistent: true` и ручная инвалидация |
 | `context-destroy-with-entry`           | `context.destroy()` по `stopUsing$` entry (Page/Dialog)      |
 | `client-scoped-context-for-shared-ui`  | Один Context на Client для chrome (badge, корзина)           |
 | `context-ref-in-strings`               | `ContextRef` в шаблонных строках (`toString()`, `strictRef`) |
