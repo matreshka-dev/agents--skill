@@ -57,6 +57,7 @@ npx skills add . --agent cursor
 | `when-oneof-vs-when-any`              | `oneOf` vs `any`/`all` в conditions                             |
 | `create-instance-before-serialize`    | `createInstance()`, `componentId`, `instance` в событиях        |
 | `register-color-tokens`               | Color tokens в `ClientSettings`                                 |
+| `focus-within-style-field-wrappers`   | `focusWithinStyle` на обёртках полей (input, select, surface)   |
 
 ### События, формы, навигация
 

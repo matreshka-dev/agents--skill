@@ -28,7 +28,8 @@
         "foreach-stable-track",
         "when-oneof-vs-when-any",
         "create-instance-before-serialize",
-        "register-color-tokens"
+        "register-color-tokens",
+        "focus-within-style-field-wrappers"
       ]
     },
     {
