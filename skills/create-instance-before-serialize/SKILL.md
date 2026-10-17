@@ -55,7 +55,7 @@ const firstButton = demoButton.createInstance();
 const secondButton = demoButton.createInstance();
 ```
 
-**Popover:** anchor — `instance` из `onClick`, не базовый `component.id`.
+**Popover:** **source** — `instance` из `onClick`, не базовый `component.id`. Если визуальный **anchor** другой (шапка, обёртка поля) — нужна отдельная ссылка: `createInstance()` или поле, сохранённое при сборке страницы; в API: `showPopover({ source: instance, anchor: headerInstance }, …)`.
 
 ## Ограничение
 
@@ -64,7 +64,8 @@ const secondButton = demoButton.createInstance();
 ## Чеклист
 
 - [ ] `componentId` в `animate` — id нужного **инстанса** или базовый id компонента по docs
-- [ ] `showPopover(instance, …)` — instance из события
+- [ ] `showPopover(instance, …)` — source = instance из события
+- [ ] Split anchor — второй инстанс известен до клика (не базовый `component.id`)
 - [ ] Не путать базовый id Component и instance id в interaction `target`
 
 ## Связанные скиллы

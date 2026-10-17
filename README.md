@@ -45,6 +45,7 @@ npx skills add . --agent cursor
 | `storage-vs-context`                   | Клиентский `storage` vs состояние сценария в `Context`       |
 | `context-subscribe-take-until-destroy` | `data$` с `takeUntil(destroy$)` на entry                     |
 | `context-zod-draft-not-live-strict`    | Zod: draft vs strict на живом вводе                          |
+| `context-date-iso-timezone`            | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)      |
 | `emit-after-in-place-mutation`         | `emitAfterInPlaceMutation()` после in-place мутации          |
 
 ### Компоненты, условия, списки
@@ -70,7 +71,7 @@ npx skills add . --agent cursor
 | `instant-ui-set-context-value`      | `setContextValue` / toggle для мгновенного UI                |
 | `link-vs-navigate`                  | `link.value` vs `navigate()` в `onClick`                     |
 | `route-guard-return-undefined`      | Guard через `undefined` и fallback `**`                      |
-| `dialog-vs-popover-platform`        | `showDialog` vs `showPopover(instance, …)`                   |
+| `dialog-vs-popover-platform`        | `showDialog` vs `showPopover` (source / `{ anchor, source }`) |
 | `popover-viewport-size-limit`       | Лимит popover по экрану; `positionArea` vs 100vh/100vw       |
 
 ### Layout и overlays

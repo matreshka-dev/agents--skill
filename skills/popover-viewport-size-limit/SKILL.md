@@ -15,7 +15,7 @@ description: >-
 
 | Что | Как |
 | --- | --- |
-| Позиция рядом с якорем | `positionArea` (например `PopoverPositionArea.LogicalBlockEnd`) |
+| Позиция рядом с якорем | `positionArea` (например `PopoverPositionArea.LogicalBlockEnd`) относительно **визуального anchor**; при `showPopover({ anchor, source }, …)` это не обязательно тот же DOM, что source |
 | Лимит по экрану | **Всегда** для popover из `showPopover` |
 | С `positionArea` | max-height/max-width до края **visual viewport** от положения у якоря (JS, `--popover-max-*`) |
 | Без `positionArea` | **max-height: 100vh**, **max-width: 100vw** (CSS); позицию задаёт браузер |
