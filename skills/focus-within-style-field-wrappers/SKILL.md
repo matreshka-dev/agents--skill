@@ -23,7 +23,7 @@ description: >-
 
 | Свойство | Зачем |
 | -------- | ----- |
-| `focusWithinStyle: true` | Состояния hover/focus оболочки, пока фокус внутри потомков |
+| `focusWithinStyle: true` | Hover и **`focus`-цвета** палитры на оболочке при `:focus-within` (фокус на потомках) |
 | `surface: true` | Фон поверхности (`Surface` / явный `surface` на stack) |
 | `outline` с `OutlineType.Border` | Визуальная рамка; border берёт `ColorRole.Border` |
 | `colors` | Минимум `Background`, `Border`; для содержимого — `Text`, `Placeholder`, `Icon` на обёртке или наследование — см. **`inherit-color-roles-in-tree`** |
@@ -31,7 +31,7 @@ description: >-
 
 Вынесите повторяющийся набор в shared-стиль приложения (например `@styles/…` с пресетом surface + colors для полей).
 
-Токены с состояниями **`default` / `hover` / `active`** регистрируйте в `clientSettings.colors.registry` — см. **`register-color-tokens`**.
+Токены с состояниями **`default` / `hover` / `active` / `focus`** регистрируйте в `clientSettings.colors.registry` — см. **`register-color-tokens`**. Для полей критичен **`focus`** (оболочка при фокусе в input); **`active`** — если обёртка сама нажимается (редко).
 
 ## Когда не использовать
 
@@ -39,6 +39,7 @@ description: >-
 | -------- | ------------ |
 | Кликабельная кнопка, пункт меню, `link` | `onClick` или `link.value`; см. **`link-vs-navigate`** |
 | Hover/active только через context + `rules` (например меню с `onMouseEnter`) | BFF conditions; `focusWithinStyle` не заменяет такую логику |
+| Нужен только цвет **нажатия** на обёртке | `active` в токене; фокус в input — отдельно **`focus`**, не путать с `active` |
 | Декоративный stack без фокусируемых потомков | `focusWithinStyle` не нужен |
 
 ## `focusWithinStyle` vs кнопка / ссылка
@@ -106,6 +107,6 @@ stack({ focusWithinStyle: true }, [textInput({ ref: "name" })]);
 
 - [ ] Фокус реально на **потомке** или планируется input внутри обёртки
 - [ ] На обёртке: **`focusWithinStyle: true`**, **`surface: true`**, **`outline`** (border), **`colors`** с field-токенами
-- [ ] Токены зарегистрированы (**`register-color-tokens`**), hover/active не забыты
+- [ ] Токены зарегистрированы (**`register-color-tokens`**), для полей заданы **hover** и **`focus`**
 - [ ] Не смешан с **`onClick` / `link`** там, где нужна кнопка или ссылка, а не поле
 - [ ] Повторяющиеся поля переиспользуют один shared-пресет обёртки поля

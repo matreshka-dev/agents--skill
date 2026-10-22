@@ -32,21 +32,21 @@ npx skills add . --agent cursor
 
 ### Context и состояние
 
-| Скилл                                  | Назначение                                                   |
-| -------------------------------------- | ------------------------------------------------------------ |
-| `context-init-in-boot`                 | Preload / lazy / `init()` в `boot()` при `value()` в рендере |
+| Скилл                                  | Назначение                                                                              |
+| -------------------------------------- | --------------------------------------------------------------------------------------- |
+| `context-init-in-boot`                 | Preload / lazy / `init()` в `boot()` при `value()` в рендере                            |
 | `context-plan-destroy-on-create`       | План `destroy()`; default auto при last client; `persistent: true` и ручная инвалидация |
-| `context-destroy-with-entry`           | `context.destroy()` по `stopUsing$` entry (Page/Dialog)      |
-| `client-scoped-context-for-shared-ui`  | Один Context на Client для chrome (badge, корзина)           |
-| `context-ref-in-strings`               | `ContextRef` в шаблонных строках (`toString()`, `strictRef`) |
-| `prefer-context-ref-in-ui`             | `ContextRef` в props UI вместо `value()`                     |
-| `strict-context-ref`                   | `ContextRef<C, P>` на странице, без `any`                    |
-| `context-value-ref-in-api`             | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов  |
-| `storage-vs-context`                   | Клиентский `storage` vs состояние сценария в `Context`       |
-| `context-subscribe-take-until-destroy` | `data$` с `takeUntil(destroy$)` на entry                     |
-| `context-zod-draft-not-live-strict`    | Zod: draft vs strict на живом вводе                          |
-| `context-date-iso-timezone`            | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)      |
-| `emit-after-in-place-mutation`         | `emitAfterInPlaceMutation()` после in-place мутации          |
+| `context-destroy-with-entry`           | `context.destroy()` по `stopUsing$` entry (Page/Dialog)                                 |
+| `client-scoped-context-for-shared-ui`  | Один Context на Client для chrome (badge, корзина)                                      |
+| `context-ref-in-strings`               | `ContextRef` в шаблонных строках (`toString()`, `strictRef`)                            |
+| `prefer-context-ref-in-ui`             | `ContextRef` в props UI вместо `value()`                                                |
+| `strict-context-ref`                   | `ContextRef<C, P>` на странице, без `any`                                               |
+| `context-value-ref-in-api`             | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов                             |
+| `storage-vs-context`                   | Клиентский `storage` vs состояние сценария в `Context`                                  |
+| `context-subscribe-take-until-destroy` | `data$` с `takeUntil(destroy$)` на entry                                                |
+| `context-zod-draft-not-live-strict`    | Zod: draft vs strict на живом вводе                                                     |
+| `context-date-iso-timezone`            | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)                                 |
+| `emit-after-in-place-mutation`         | `emitAfterInPlaceMutation()` после in-place мутации                                     |
 
 ### Компоненты, условия, списки
 
@@ -62,17 +62,17 @@ npx skills add . --agent cursor
 
 ### События, формы, навигация
 
-| Скилл                               | Назначение                                                   |
-| ----------------------------------- | ------------------------------------------------------------ |
-| `form-submit-shared-handler`        | Общий handler для `onSubmit` и `onClick`                     |
-| `prevent-duplicate-form-submit`     | `loading` + `setContextValue` + conditional `ServerAction`   |
-| `return-server-action-promise`      | Return/await Promise в server handlers                       |
-| `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте |
-| `instant-ui-set-context-value`      | `setContextValue` / toggle для мгновенного UI                |
-| `link-vs-navigate`                  | `link.value` vs `navigate()` в `onClick`                     |
-| `route-guard-return-undefined`      | Guard через `undefined` и fallback `**`                      |
+| Скилл                               | Назначение                                                    |
+| ----------------------------------- | ------------------------------------------------------------- |
+| `form-submit-shared-handler`        | Общий handler для `onSubmit` и `onClick`                      |
+| `prevent-duplicate-form-submit`     | `loading` + `setContextValue` + conditional `ServerAction`    |
+| `return-server-action-promise`      | Return/await Promise в server handlers                        |
+| `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте  |
+| `instant-ui-set-context-value`      | `setContextValue` / toggle для мгновенного UI                 |
+| `link-vs-navigate`                  | `link.value` vs `navigate()` в `onClick`                      |
+| `route-guard-return-undefined`      | Guard через `undefined` и fallback `**`                       |
 | `dialog-vs-popover-platform`        | `showDialog` vs `showPopover` (source / `{ anchor, source }`) |
-| `popover-viewport-size-limit`       | Лимит popover по экрану; `positionArea` vs 100vh/100vw       |
+| `popover-viewport-size-limit`       | Лимит popover по экрану; `positionArea` vs 100vh/100vw        |
 
 ### Layout и overlays
 

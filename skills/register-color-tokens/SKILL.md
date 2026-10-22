@@ -15,16 +15,30 @@ description: >-
 
 ## Роли файлов (в конфиге Matreshka приложения)
 
-| Шаг | Что искать в проекте |
-|-----|----------------------|
-| Определение токена | Модуль(и) с экспортом `*ColorToken` (обычно каталог вроде `color-tokens/`) |
-| Регистрация | **`clientSettings.colors.registry`** — массив токенов |
-| Тема приложения | **`clientSettings.colors.default`** — роли на `html` (platform overlays, fallback) |
-| Использование в UI | `colors: { [ColorRole.*]: ... }` на страницах и в общих компонентах конфига |
+| Шаг                | Что искать в проекте                                                               |
+| ------------------ | ---------------------------------------------------------------------------------- |
+| Определение токена | Модуль(и) с экспортом `*ColorToken` (обычно каталог вроде `color-tokens/`)         |
+| Регистрация        | **`clientSettings.colors.registry`** — массив токенов                              |
+| Тема приложения    | **`clientSettings.colors.default`** — роли на `html` (platform overlays, fallback) |
+| Использование в UI | `colors: { [ColorRole.*]: ... }` на страницах и в общих компонентах конфига        |
 
 На клиенте классы для `properties.colors` вешаются на `ServerComponentWrapper`; `default` — на `document.documentElement`.
 
 Общие переходы для ролей (shared `transition`, например `colorRoleTransition`) — это **не** отдельная палитра, в `registry` их не добавляют.
+
+## Состояния палитры
+
+В каждой теме (`default` или `light`/`dark`): **`default`** обязателен; **`hover`**, **`active`**, **`focus`** — опциональны.
+
+| Поле     | На клиенте                                                     |
+| -------- | -------------------------------------------------------------- |
+| `hover`  | `:hover` (`.interactive`, обёртки полей)                       |
+| `active` | `:active` (нажатие)                                            |
+| `focus`  | `:focus-visible` и `:focus-within` (в т.ч. `focusWithinStyle`) |
+
+Если `hover` или `focus` не заданы, клиент подставляет **`default`** в `--{role}-color_hover` / `--{role}-color_focus` (как для `active`).
+
+Для **интерактивных** токенов (кнопки, поля с hover) задавайте **`focus` явно**, иначе Tab и фокус в input визуально совпадут с `default`.
 
 ## Порядок при новом токене
 
@@ -42,6 +56,7 @@ description: >-
 - [ ] Токены из `colors.default` ⊆ `registry`
 - [ ] Импорт в модуль `clientSettings` соответствует имени константы
 - [ ] Нет «висячих» токенов: если токен объявлен, но не в `registry` — либо зарегистрировать, либо не использовать в UI
+- [ ] У интерактивных токенов при необходимости заданы `hover` / `active` / **`focus`**
 
 ## Пример
 
