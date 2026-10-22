@@ -17,7 +17,7 @@ description: >-
 
 ```typescript
 const iso = dbDate.toISOString();
-context.setValue('bornAt', iso);
+context.set({ bornAt: iso });
 // или при сборке data() / map*ToFormValues:
 bornAt: user.birthday ? user.birthday.toJSON() : '',
 ```
@@ -41,7 +41,7 @@ bornAt: user.birthday ? user.birthday.toJSON() : '',
 - [ ] Новые поля даты в `Context` — тип **`string`**
 - [ ] Из `Date` в контекст — **`toJSON()`** / **`toISOString()`**, не `slice(0, 10)`
 - [ ] Не кладёшь в контекст «голый» datetime без `Z` / offset, если нужен точный момент
-- [ ] UI — **`context.ref('field')`**, не `value()` в дереве ([prefer-context-ref-in-ui](../prefer-context-ref-in-ui/SKILL.md))
+- [ ] UI — **`context.ref('field')`**, не `get()` в дереве ([prefer-context-ref-in-ui](../prefer-context-ref-in-ui/SKILL.md))
 
 ## Антипаттерны
 

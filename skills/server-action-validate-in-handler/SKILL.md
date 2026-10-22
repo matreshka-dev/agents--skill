@@ -26,7 +26,7 @@ description: >-
 ## Что делать в handler
 
 1. Перед side effect (запись, оплата, удаление) проверяй права и инварианты через сервис/API с данными авторизации.
-2. Не считай `this.context.value(...)` достаточным доказательством права на операцию.
+2. Не считай `this.context.get(...)` достаточным доказательством права на операцию.
 3. Не полагайся на `conditions` action как на server gate — они только для клиентского снимка и экономии round-trip.
 
 ## Шаблон
@@ -34,7 +34,7 @@ description: >-
 ```typescript
 new ServerAction(async () => {
   const userId = this.session.userId(); // auth источник
-  const orderId = this.context.value("orderId");
+  const orderId = this.context.get("orderId");
 
   const allowed = await this.orders.canCancel(userId, orderId);
   if (!allowed) {

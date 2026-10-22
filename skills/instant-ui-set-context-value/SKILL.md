@@ -60,7 +60,7 @@ button(
 ```typescript
 // ❌ Только server handler для boolean loading — UI ждёт сеть
 onClick: async () => {
-  this.context.setValue("loading", true);
+  this.context.set({ loading: true });
 };
 ```
 

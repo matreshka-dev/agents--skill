@@ -24,7 +24,7 @@ description: >-
 
 ## `persistent: true`
 
-Флаг **`persistent`** (readonly на экземпляре) **отключает** auto-destroy при нуле клиентов. Контекст **переживает** период без потребителей; один **`data$` на процесс** для всех одновременно привязанных `Client`.
+Флаг **`persistent`** (readonly на экземпляре) **отключает** auto-destroy при нуле клиентов. Контекст **переживает** период без потребителей; **одно состояние на процесс** для всех одновременно привязанных `Client`.
 
 - **`persistent` ≠ immortal** — явный `context.destroy()` всё равно нужен, если данные **не** должны жить весь runtime (reload справочника, версия, shutdown).
 - **Не** путать с **client-scoped** (`WeakMap<Client, Context>`): там память **растёт** с числом клиентов; `persistent` — один id, O(1) контекстов на процесс.
@@ -57,7 +57,7 @@ new Context({
 - [ ] `persistent: true` — обоснован process-wide; есть **ручной** destroy, если не весь runtime
 - [ ] Component internal Context — destroy на **`stopUsing$` компонента**
 - [ ] Подписки — `takeUntil(destroy$)` entry или `client.destroy$`
-- [ ] После `await` — `isDestroyed()` / `ContextRef.setValue` в `finally`
+- [ ] После `await` — `isDestroyed()` / `ref.set()` в `finally`
 
 ## Антипаттерн
 
@@ -84,7 +84,7 @@ export class OrdersPage extends Page {
 | `context-destroy-with-entry` | Entry-scoped destroy |
 | `client-scoped-context-for-shared-ui` | Один Context на Client |
 | `context-init-in-boot` | Парный `init()` |
-| `context-subscribe-take-until-destroy` | `data$` на entry |
+| `context-subscribe-take-until-destroy` | `watch()` на entry |
 | `storage-vs-context` | Context vs storage |
 
 Документация: `matreshka/docs/advanced/context-destroy-scenarios.md`, `matreshka/docs/architecture/context-lifecycle.md`.

@@ -84,5 +84,5 @@ text(`Привет, ${this.context.ref("name")}`);
 cardsContext.ref("cards").ref(indexContext.ref("key"));
 
 // Ожидание «значения сейчас» в BFF вместо плейсхолдера
-text(`Имя: ${this.context.value("name")}`); // value() — для серверной логики, не для клиентского binding в строке
+text(`Имя: ${this.context.get("name")}`); // get() — для серверной логики, не для клиентского binding в строке
 ```

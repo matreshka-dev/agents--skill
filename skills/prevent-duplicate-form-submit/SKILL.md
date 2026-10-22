@@ -31,11 +31,11 @@ const submitForm = [
     async () => {
       try {
         await signIn(
-          this.context.value("login"),
-          this.context.value("password"),
+          this.context.get("login"),
+          this.context.get("password"),
         );
       } finally {
-        loadingRef.setValue(false);
+        loadingRef.set(false);
       }
     },
     {
@@ -83,7 +83,7 @@ return form(
 - [ ] В `Context` есть булевый флаг отправки со значением `false` по умолчанию
 - [ ] Первое действие подтверждения — `setContextValue(flagRef, true)`
 - [ ] `ServerAction` имеет `conditions: [when.equals(flagRef, false)]`
-- [ ] Флаг сбрасывается после успеха и ошибки (`loadingRef.setValue(false)` в `finally`, не дублируй путь через `context.setValue`)
+- [ ] Флаг сбрасывается после успеха и ошибки (`loadingRef.set(false)` в `finally`, не дублируй путь через `context.set`)
 - [ ] Один список действий используется в `form.onSubmit` и `button.onClick`
 - [ ] Поля и кнопка находятся внутри `form`
 
@@ -91,5 +91,5 @@ return form(
 
 - **`form-submit-shared-handler`** — общий handler для `onSubmit` и `onClick`
 - **`instant-ui-set-context-value`** — зачем первым идёт `setContextValue`
-- **`context-value-ref-in-api`** — запись через `ref.setValue`, когда ref уже в scope
+- **`context-value-ref-in-api`** — запись через `ref.set`, когда ref уже в scope
 - **`rules-not-conditions-for-loading-ui`** — текст «Отправляем…» через `rules`

@@ -1,16 +1,16 @@
 ---
 name: context-subscribe-take-until-destroy
 description: >-
-  Subscribes to Matreshka BFF Context data$ on entry components with
+  Subscribes to Matreshka BFF Context watch() on entry components with
   takeUntil(destroy$) to avoid leaks after Page or Dialog unmount. Use when
-  adding data$ subscriptions, side effects, or logging on context changes.
+  adding context subscriptions, side effects, or logging on context changes.
 ---
 
-# Подписка на `context.data$` и `destroy$` (Matreshka BFF)
+# Подписка на `context.watch()` и `destroy$` (Matreshka BFF)
 
 ## Правило
 
-На **`Page`**, **`Dialog`**, **`Popover`** (entry) подписки на `this.context.data$` должны завершаться вместе с entry:
+На **`Page`**, **`Dialog`**, **`Popover`** (entry) подписки на `this.context.watch()` должны завершаться вместе с entry:
 
 ```typescript
 import { takeUntil } from "rxjs";
@@ -18,13 +18,16 @@ import { takeUntil } from "rxjs";
 override async boot() {
   await super.boot();
 
-  this.context.data$?.pipe(takeUntil(this.destroy$)).subscribe((data) => {
-    // реакция на изменение контекста
-  });
+  this.context
+    .watch()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((data) => {
+      // реакция на изменение контекста
+    });
 }
 ```
 
-Без отписки — лишние реакции, утечки, обработка уже закрытого UI.
+`watch()` ждёт `init()`, если хранилище ещё не создано. Без отписки — лишние реакции, утечки, обработка уже закрытого UI.
 
 ## Альтернатива
 
@@ -34,7 +37,7 @@ override async boot() {
 
 ```typescript
 // ❌ Подписка без takeUntil на entry
-this.context.data$?.subscribe(() => {
+this.context.watch().subscribe(() => {
   this.doSomething();
 });
 ```

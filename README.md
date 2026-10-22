@@ -34,19 +34,19 @@ npx skills add . --agent cursor
 
 | Скилл                                  | Назначение                                                                              |
 | -------------------------------------- | --------------------------------------------------------------------------------------- |
-| `context-init-in-boot`                 | Preload / lazy / `init()` в `boot()` при `value()` в рендере                            |
+| `context-init-in-boot`                 | Preload / lazy / `init()` в `boot()` при `get()` в рендере                              |
 | `context-plan-destroy-on-create`       | План `destroy()`; default auto при last client; `persistent: true` и ручная инвалидация |
 | `context-destroy-with-entry`           | `context.destroy()` по `stopUsing$` entry (Page/Dialog)                                 |
 | `client-scoped-context-for-shared-ui`  | Один Context на Client для chrome (badge, корзина)                                      |
 | `context-ref-in-strings`               | `ContextRef` в шаблонных строках (`toString()`, `strictRef`)                            |
-| `prefer-context-ref-in-ui`             | `ContextRef` в props UI вместо `value()`                                                |
+| `prefer-context-ref-in-ui`             | `ContextRef` в props UI вместо `get()` в аргументах                                     |
 | `strict-context-ref`                   | `ContextRef<C, P>` на странице, без `any`                                               |
 | `context-value-ref-in-api`             | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов                             |
 | `storage-vs-context`                   | Клиентский `storage` vs состояние сценария в `Context`                                  |
-| `context-subscribe-take-until-destroy` | `data$` с `takeUntil(destroy$)` на entry                                                |
+| `context-subscribe-take-until-destroy` | `watch()` с `takeUntil(destroy$)` на entry                                              |
 | `context-zod-draft-not-live-strict`    | Zod: draft vs strict на живом вводе                                                     |
 | `context-date-iso-timezone`            | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)                                 |
-| `emit-after-in-place-mutation`         | `emitAfterInPlaceMutation()` после in-place мутации                                     |
+| `prefer-context-get-set-over-replace-snapshot` | `get` / `set(patch)` вместо `snapshot` / `replace` для точечных правок        |
 
 ### Компоненты, условия, списки
 

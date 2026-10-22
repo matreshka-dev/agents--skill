@@ -52,7 +52,7 @@ override async boot() {
 }
 ```
 
-Согласуй порядок с **`await super.boot()`** и **`context-init-in-boot`**, если overlays зависят от `value()`.
+Согласуй порядок с **`await super.boot()`** и **`context-init-in-boot`**, если overlays зависят от `get()`.
 
 ## Чеклист
 

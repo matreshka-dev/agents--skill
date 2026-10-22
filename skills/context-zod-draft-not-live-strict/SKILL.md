@@ -28,7 +28,7 @@ context = new Context({
   data: async () => ({ emailDraft: "", email: undefined }),
 });
 
-// onSubmit: прочитать draft, setValue("email", validated) или показать ошибку
+// onSubmit: прочитать draft, set({ email: validated }) или показать ошибку
 ```
 
 **2. Схема, допускающая промежуточные состояния**

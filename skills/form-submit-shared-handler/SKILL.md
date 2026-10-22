@@ -28,8 +28,8 @@ description: >-
 
 ```typescript
 const submitForm = () => {
-  const name = this.context.value("name");
-  this.context.setValue("result", `Привет, ${name}`);
+  const name = this.context.get("name");
+  this.context.set({ result: `Привет, ${name}` });
 };
 
 form(

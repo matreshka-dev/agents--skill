@@ -115,7 +115,7 @@ export function destroySessionUserContext(client: Client = currentClient()): voi
 async boot(): Promise<unknown> {
   await super.boot();
   const session = currentSessionUserContext();
-  await session.init(); // см. context-init-in-boot, если рендер читает value()
+  await session.init(); // см. context-init-in-boot, если рендер читает get()
   return;
 }
 ```
@@ -144,7 +144,7 @@ export class NotificationBell extends Button {
 На странице списка уведомлений после «прочитать всё»:
 
 ```typescript
-currentSessionUserContext().setValue('unreadNotifications', 0);
+currentSessionUserContext().set({ unreadNotifications: 0 });
 ```
 
 Так badge в шапке обновится **без** повторного mount shell и без второго контекста.
@@ -153,7 +153,7 @@ currentSessionUserContext().setValue('unreadNotifications', 0);
 
 | Скилл | Роль |
 | ----- | ---- |
-| `context-init-in-boot` | `await session.init()` в shell до `value()` в рендере |
+| `context-init-in-boot` | `await session.init()` в shell до `get()` в рендере |
 | `context-destroy-with-entry` | destroy **page/dialog** контекстов, не session |
 | `prefer-context-ref-in-ui` | refs из session context в props виджетов |
 | `strict-context-ref` | типы ref для полей session context |

@@ -17,7 +17,7 @@
         "context-subscribe-take-until-destroy",
         "context-zod-draft-not-live-strict",
         "context-date-iso-timezone",
-        "emit-after-in-place-mutation"
+        "prefer-context-get-set-over-replace-snapshot"
       ]
     },
     {

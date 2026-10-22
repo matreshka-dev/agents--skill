@@ -37,7 +37,7 @@ button(
 button(
   {
     onClick: () => {
-      const ok = this.context.value("isAuthorized");
+      const ok = this.context.get("isAuthorized");
       currentClientPlatform().navigate(ok ? "/dashboard" : "/login");
     },
   },

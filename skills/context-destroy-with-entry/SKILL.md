@@ -24,7 +24,7 @@ description: >-
 - В `boot()` или server actions вешаешь **долгоживущие подписки** на контекст или данные, привязанные к странице.
 - На одной entry несколько контекстов (списки, вложенные блоки) — **каждый** нужно привязать к тому же entry (или к своему дочернему entry, если контекст локален ему).
 
-С **`context-init-in-boot`**: сначала `await context.init()` в `boot()` там, где рендер читает `value()`; destroy по `stopUsing$` — парная операция на выходе.
+С **`context-init-in-boot`**: сначала `await context.init()` в `boot()` там, где рендер читает `get()`; destroy по `stopUsing$` — парная операция на выходе.
 
 ## Почему `stopUsing$`
 
@@ -35,7 +35,7 @@ description: >-
 
 Это сигнал «entry больше не используется на клиенте» — подходящий момент для `Context.destroy()`.
 
-`Context.destroy()` снимает подписки, завершает `data$`, шлёт клиентам `ContextDestroyMessage` и снимает контекст с реестра (см. `@matreshka/bff/core`).
+`Context.destroy()` снимает подписки, завершает поток данных (`watch()`), шлёт клиентам `ContextDestroyMessage` и снимает контекст с реестра (см. `@matreshka/bff/core`).
 
 ## Шаблон (утилита в проекте)
 
