@@ -32,21 +32,21 @@ npx skills add . --agent cursor
 
 ### Context и состояние
 
-| Скилл                                  | Назначение                                                                              |
-| -------------------------------------- | --------------------------------------------------------------------------------------- |
-| `context-init-in-boot`                 | Preload / lazy / `init()` в `boot()` при `get()` в рендере                              |
-| `context-plan-destroy-on-create`       | План `destroy()`; default auto при last client; `persistent: true` и ручная инвалидация |
-| `context-destroy-with-entry`           | `context.destroy()` по `stopUsing$` entry (Page/Dialog)                                 |
-| `client-scoped-context-for-shared-ui`  | Один Context на Client для chrome (badge, корзина)                                      |
-| `context-ref-in-strings`               | `ContextRef` в шаблонных строках (`toString()`, `strictRef`)                            |
-| `prefer-context-ref-in-ui`             | `ContextRef` в props UI вместо `get()` в аргументах                                     |
-| `strict-context-ref`                   | `ContextRef<C, P>` на странице, без `any`                                               |
-| `context-value-ref-in-api`             | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов                             |
-| `storage-vs-context`                   | Клиентский `storage` vs состояние сценария в `Context`                                  |
-| `context-subscribe-take-until-destroy` | `watch()` с `takeUntil(destroy$)` на entry                                              |
-| `context-zod-draft-not-live-strict`    | Zod: draft vs strict на живом вводе                                                     |
-| `context-date-iso-timezone`            | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)                                 |
-| `prefer-context-get-set-over-replace-snapshot` | `get` / `set(patch)` вместо `snapshot` / `replace` для точечных правок        |
+| Скилл                                          | Назначение                                                                              |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `context-init-in-boot`                         | Preload / lazy / `init()` в `boot()` при `get()` в рендере                              |
+| `context-plan-destroy-on-create`               | План `destroy()`; default auto при last client; `persistent: true` и ручная инвалидация |
+| `context-destroy-with-entry`                   | `context.destroy()` по `stopUsing$` entry (Page/Dialog)                                 |
+| `client-scoped-context-for-shared-ui`          | Один Context на Client для chrome (badge, корзина)                                      |
+| `context-ref-in-strings`                       | `ContextRef` в шаблонных строках (`toString()`, `strictRef`)                            |
+| `prefer-context-ref-in-ui`                     | `ContextRef` в props UI вместо `get()` в аргументах                                     |
+| `strict-context-ref`                           | `ContextRef<C, P>` на странице, без `any`                                               |
+| `context-value-ref-in-api`                     | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов                             |
+| `storage-vs-context`                           | Клиентский `storage` vs состояние сценария в `Context`                                  |
+| `context-subscribe-take-until-destroy`         | `watch()` с `takeUntil(destroy$)` на entry                                              |
+| `context-zod-draft-not-live-strict`            | Zod: draft vs strict на живом вводе                                                     |
+| `context-date-iso-timezone`                    | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)                                 |
+| `prefer-context-get-set-over-replace-snapshot` | `get` / `set(patch)` вместо `snapshot` / `replace` для точечных правок                  |
 
 ### Компоненты, условия, списки
 
@@ -68,7 +68,7 @@ npx skills add . --agent cursor
 | `prevent-duplicate-form-submit`     | `loading` + `ref.local.set` + conditional `ServerAction`      |
 | `return-server-action-promise`      | Return/await Promise в server handlers                        |
 | `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте  |
-| `prefer-local-actions`              | Локальные действия компонентам/инстансам и глобальный `local`  |
+| `prefer-local-actions`              | Локальные действия компонентам/инстансам и глобальный `local` |
 | `instant-ui-set-context-value`      | `context.local` / `ref.local` для мгновенного UI              |
 | `link-vs-navigate`                  | `link.value` vs `navigate()` в `onClick`                      |
 | `route-guard-return-undefined`      | Guard через `undefined` и fallback `**`                       |
