@@ -69,6 +69,7 @@ npx skills add . --agent cursor
 | `return-server-action-promise`      | Return/await Promise в server handlers                        |
 | `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте  |
 | `prefer-local-actions`              | Локальные действия компонентам/инстансам и глобальный `local` |
+| `local-actions-boundaries`          | Граница LocalAction и server handler; не `*.local.*` в callback |
 | `instant-ui-set-context-value`      | `context.local` / `ref.local` для мгновенного UI              |
 | `link-vs-navigate`                  | `link.value` vs `navigate()` в `onClick`                      |
 | `route-guard-return-undefined`      | Guard через `undefined` и fallback `**`                       |
