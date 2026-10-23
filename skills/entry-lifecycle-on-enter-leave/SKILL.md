@@ -22,6 +22,8 @@ description: >-
 ## Шаблон
 
 ```typescript
+import { local } from "@matreshka/bff/core";
+
 class FeedPage extends Page {
   protected content() {
     return [text("Лента")];
@@ -30,8 +32,8 @@ class FeedPage extends Page {
 
 dialog(
   {
-    onEnter: animate({ duration: 200, effects: { /* … */ } }),
-    onLeave: animate({ duration: 200, effects: { /* … */ } }),
+    onEnter: local.animate({ duration: 200, effects: { /* … */ } }),
+    onLeave: local.animate({ duration: 200, effects: { /* … */ } }),
   },
   [text("Содержимое")],
 );
@@ -41,7 +43,7 @@ dialog(
 // ✅ Regular: появление блока в дереве
 stack(
   {
-    onShow: animate({ duration: 250, effects: { /* opacity */ } }),
+    onShow: local.animate({ duration: 250, effects: { /* opacity */ } }),
   },
   [text("Карточка")],
 );

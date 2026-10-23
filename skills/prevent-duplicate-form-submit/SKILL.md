@@ -2,7 +2,7 @@
 name: prevent-duplicate-form-submit
 description: >-
   Protects Matreshka BFF forms from duplicate submissions with a Context
-  loading flag, an immediate setContextValue action, and a conditional
+  loading flag, an immediate ref.local.set / context.local.set action, and a conditional
   ServerAction. Use when creating, editing, or reviewing forms that send
   requests or start asynchronous operations.
 ---
@@ -14,7 +14,7 @@ description: >-
 Для формы, которая отправляет запрос или запускает асинхронную операцию:
 
 1. Храни в `Context` булевый флаг отправки, например `loading`, с начальным значением `false`.
-2. При подтверждении сразу устанавливай флаг в `true` через клиентский `setContextValue`.
+2. При подтверждении сразу устанавливай флаг в `true` через `loadingRef.local.set(true)` (или `context.local.set({ loading: true })`).
 3. Добавляй серверному действию условие `when.equals(loadingRef, false)`.
 4. После завершения операции возвращай флаг в `false`, включая сценарий ошибки.
 
@@ -26,7 +26,7 @@ description: >-
 const loadingRef = this.context.ref("loading");
 
 const submitForm = [
-  setContextValue(loadingRef, true),
+  loadingRef.local.set(true),
   new ServerAction(
     async () => {
       try {
@@ -69,7 +69,7 @@ return form(
 );
 ```
 
-Клиент сначала отбирает действия по условиям, а затем выполняет их. Поэтому при первой отправке `ServerAction` проходит условие по исходному `loading === false`, даже если соседний `setContextValue` сразу меняет флаг на `true`. При следующей попытке условие уже ложно, и повторный запрос не отправляется.
+Клиент сначала отбирает действия по условиям, а затем выполняет их. Поэтому при первой отправке `ServerAction` проходит условие по исходному `loading === false`, даже если соседний `loadingRef.local.set(true)` сразу меняет флаг. При следующей попытке условие уже ложно, и повторный запрос не отправляется.
 
 ## Не делать
 
@@ -81,7 +81,7 @@ return form(
 ## Чеклист агента
 
 - [ ] В `Context` есть булевый флаг отправки со значением `false` по умолчанию
-- [ ] Первое действие подтверждения — `setContextValue(flagRef, true)`
+- [ ] Первое действие подтверждения — `flagRef.local.set(true)`
 - [ ] `ServerAction` имеет `conditions: [when.equals(flagRef, false)]`
 - [ ] Флаг сбрасывается после успеха и ошибки (`loadingRef.set(false)` в `finally`, не дублируй путь через `context.set`)
 - [ ] Один список действий используется в `form.onSubmit` и `button.onClick`
@@ -90,6 +90,6 @@ return form(
 ## Связанные скиллы
 
 - **`form-submit-shared-handler`** — общий handler для `onSubmit` и `onClick`
-- **`instant-ui-set-context-value`** — зачем первым идёт `setContextValue`
+- **`instant-ui-set-context-value`** — зачем первым идёт local set на клиенте
 - **`context-value-ref-in-api`** — запись через `ref.set`, когда ref уже в scope
 - **`rules-not-conditions-for-loading-ui`** — текст «Отправляем…» через `rules`

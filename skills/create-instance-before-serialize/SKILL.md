@@ -21,13 +21,15 @@ description: >-
 **Анимация другого компонента:**
 
 ```typescript
+import { local } from "@matreshka/bff/core";
+
 const banner = text("Сохранено");
 
 [
   banner,
   button(
     {
-      onClick: animate({
+      onClick: local.animate({
         componentId: banner.id,
         duration: 300,
         effects: { /* opacity */ },

@@ -65,10 +65,11 @@ npx skills add . --agent cursor
 | Скилл                               | Назначение                                                    |
 | ----------------------------------- | ------------------------------------------------------------- |
 | `form-submit-shared-handler`        | Общий handler для `onSubmit` и `onClick`                      |
-| `prevent-duplicate-form-submit`     | `loading` + `setContextValue` + conditional `ServerAction`    |
+| `prevent-duplicate-form-submit`     | `loading` + `ref.local.set` + conditional `ServerAction`      |
 | `return-server-action-promise`      | Return/await Promise в server handlers                        |
 | `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте  |
-| `instant-ui-set-context-value`      | `setContextValue` / toggle для мгновенного UI                 |
+| `prefer-local-actions`              | Локальные действия компонентам/инстансам и глобальный `local`  |
+| `instant-ui-set-context-value`      | `context.local` / `ref.local` для мгновенного UI              |
 | `link-vs-navigate`                  | `link.value` vs `navigate()` в `onClick`                      |
 | `route-guard-return-undefined`      | Guard через `undefined` и fallback `**`                       |
 | `dialog-vs-popover-platform`        | `showDialog` vs `showPopover` (source / `{ anchor, source }`) |

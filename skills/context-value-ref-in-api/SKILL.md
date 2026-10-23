@@ -64,7 +64,7 @@ function historyBlock(ref: ContextArrayRef<ChatMessage>) {
 | ------ | --------------- | ----------- |
 | Прочитать значение | `ref.get()` | Поля ещё нет в переменной — `this.context.get("path")` |
 | Записать на BFF (handler, `ServerAction`, сервис) | `ref.set(value)` | Ref ещё не создан — `this.context.set({ path: value })` |
-| Мгновенно на клиенте в **массиве actions** | `setContextValue(ref, value)` | Не заменяет `ref.set` в async-callback на BFF — см. [instant-ui-set-context-value](../instant-ui-set-context-value/SKILL.md) |
+| Мгновенно на клиенте в **массиве actions** | `ref.local.set(value, config?)` | Не заменяет `ref.set` в async-callback на BFF — см. [instant-ui-set-context-value](../instant-ui-set-context-value/SKILL.md) |
 
 `ref.set()` на BFF вызывает `context.set({ … })` по пути ref и синхронизирует клиент. Если контекст уже уничтожен, вызов **игнорируется** — удобно в `finally` после `await`.
 
@@ -112,5 +112,5 @@ function resetLoading(loadingRef: ContextValueRef<boolean | undefined>) {
 
 - [strict-context-ref](../strict-context-ref/SKILL.md) — `ContextRef<C, P>` на странице, типы item ref в `forEach`, без `any`
 - [prefer-context-ref-in-ui](../prefer-context-ref-in-ui/SKILL.md) — ref в props UI, не `get()` в дереве
-- [instant-ui-set-context-value](../instant-ui-set-context-value/SKILL.md) — `setContextValue` в actions
+- [instant-ui-set-context-value](../instant-ui-set-context-value/SKILL.md) — `ref.local.set` / `context.local.set` в actions
 - [prevent-duplicate-form-submit](../prevent-duplicate-form-submit/SKILL.md) — сброс `loadingRef` после submit
