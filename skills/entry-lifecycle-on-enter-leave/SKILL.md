@@ -37,6 +37,20 @@ dialog(
   },
   [text("Содержимое")],
 );
+
+class ConfirmDialog extends Dialog {
+  protected content() {
+    return [text("Содержимое")];
+  }
+
+  protected onEnter() {
+    return local.animate({ duration: 200, effects: { /* … */ } });
+  }
+
+  protected onLeave() {
+    return local.animate({ duration: 200, effects: { /* … */ } });
+  }
+}
 ```
 
 ```typescript

@@ -41,7 +41,7 @@ description: >-
 
 ```typescript
 import type { Context } from '@matreshka/bff/core';
-import type { JsonObject } from '@matreshka/shared/types/json';
+import type { JsonObject } from '@matreshka/client-bff-protocol/types/json';
 import type { Observable } from 'rxjs';
 
 type DestroyableEntry = {
