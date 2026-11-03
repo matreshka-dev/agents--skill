@@ -48,6 +48,11 @@
       ]
     },
     {
+      "title": "WebMCP",
+      "description": "Тулзы браузерного агента: имя, Zod inputSchema, описание полей.",
+      "skills": ["webmcp-tool-name-and-input"]
+    },
+    {
       "title": "Layout и overlays",
       "description": "Flex, safe area, grid, RTL, overlays страницы.",
       "skills": [

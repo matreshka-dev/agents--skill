@@ -76,6 +76,12 @@ npx skills add . --agent cursor
 | `dialog-vs-popover-platform`        | `showDialog` vs `showPopover` (source / `{ anchor, source }`) |
 | `popover-viewport-size-limit`       | Лимит popover по экрану; `positionArea` vs 100vh/100vw        |
 
+### WebMCP
+
+| Скилл                          | Назначение                                                                                          |
+| ------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `webmcp-tool-name-and-input`   | Имя из `[A-Za-z0-9_-]`; Zod `inputSchema` по UI; `conditions` только для видимости; ждать команды платформы и контекст до ответа агенту |
+
 ### Layout и overlays
 
 | Скилл                                  | Назначение                                              |
