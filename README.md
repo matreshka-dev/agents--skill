@@ -45,6 +45,7 @@ npx skills add . --agent cursor
 | `storage-vs-context`                           | Клиентский `storage` vs состояние сценария в `Context`                                  |
 | `context-subscribe-take-until-destroy`         | `watch()` с `takeUntil(destroy$)` на entry                                              |
 | `context-zod-draft-not-live-strict`            | Zod: draft vs strict на живом вводе                                                     |
+| `context-validate-untrusted-sources`           | Zod для данных из недоверенных источников (клиент, внешний API)                         |
 | `context-date-iso-timezone`                    | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)                                 |
 | `prefer-context-get-set-over-replace-snapshot` | `get` / `set(patch)` вместо `snapshot` / `replace` для точечных правок                  |
 
