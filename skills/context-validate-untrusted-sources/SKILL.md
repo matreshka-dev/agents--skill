@@ -46,7 +46,7 @@ description: >-
 
 `schema` не скрывает данные. Ключ вне схемы всё равно попадает в snapshot, если он есть в данных контекста. То, что клиент видеть не должен, в сериализуемый контекст не клади.
 
-Без `schema` сервер не отсекает ключи входящего `context-values`. Отсутствие схемы — не запрет записи.
+Без `schema` входящее `context-values` отклоняется: BFF бросает ошибку и не меняет данные. Ключ, которого нет в `schema`, тоже отклоняется с ошибкой, и весь patch этого сообщения не применяется. Ошибка попадает в стандартный поток ошибок клиента.
 
 ## Сторонний API и другие внешние ответы
 
@@ -93,9 +93,7 @@ textInput({ ref: this.context.ref("query") });
 
 button({ onClick: this.context.local.inc("quantity") }, [text("+")]);
 
-button({ onClick: this.context.ref("enabled").local.toggle() }, [
-  text("Вкл"),
-]);
+button({ onClick: this.context.ref("enabled").local.toggle() }, [text("Вкл")]);
 
 // orderId и role пишет только BFF
 this.context.set({ role: "editor" });
@@ -147,7 +145,7 @@ context = new Context({
 textInput({ ref: this.context.ref("query") });
 ```
 
-`query` меняет клиент. Без `schema` входящий `context-values` не фильтруется по ключам: клиент может прислать и `query`, и `role` без Zod-проверки. В схему добавляй только `query`.
+`query` меняет клиент. Без `schema` BFF отклонит входящее `context-values` и не обновит контекст. В схему добавляй только `query`: ключ `role` клиентским сообщением менять нельзя.
 
 Серверные поля внешнего API добавлены в `schema` Context только ради `parse`. Тогда клиент тоже сможет их менять. Для таких полей нужна отдельная Zod-схема.
 
