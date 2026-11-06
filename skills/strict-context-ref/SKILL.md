@@ -92,4 +92,4 @@ function userMultiSelect(usersRef: ContextRef<any, any>, …) {
 
 ## Ориентир
 
-На странице — **alias** `ContextRef<MyContext, 'field'>` или вывод из `context.ref('…')`. В общем API — **context-value-ref-in-api**.
+На странице — **alias** `ContextRef<MyContext, 'field'>` или вывод из `context.ref('…')`. В общем API по **типу значения** — **prefer-context-value-ref**, паттерны `get`/`set` и компоненты — **context-value-ref-in-api**.

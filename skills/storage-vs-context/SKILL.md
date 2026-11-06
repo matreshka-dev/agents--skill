@@ -35,9 +35,11 @@ client.storage.set("jwt", token);
 ```
 
 ```typescript
+import { createContext } from '@matreshka/bff/core';
+
 // Состояние экрана
 class ProfilePage extends Page {
-  context = new Context({
+  context = createContext({
     data: async () => ({ name: "", editing: false }),
   });
 }

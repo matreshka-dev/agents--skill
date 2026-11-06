@@ -2,7 +2,7 @@
 name: client-scoped-context-for-shared-ui
 description: >-
   Stores session-wide UI data (badges, counters, cart) in one Context per Client
-  instead of new Context per reusable shell widget. Use for header/shell on many
+  instead of createContext per reusable shell widget. Use for header/shell on many
   pages, or when the same remote data reloads on every navigation. Pair with
   context-plan-destroy-on-create for lifecycle.
 ---
@@ -11,7 +11,7 @@ description: >-
 
 ## Правило
 
-Данные, которые **одни и те же для пользователя на всех страницах** (счётчик уведомлений, корзина, профиль в шапке, глобальные флаги сессии), храни в **одном контексте на `Client`**, а не в `new Context()` внутри переиспользуемого компонента (кнопка, badge, виджет в layout).
+Данные, которые **одни и те же для пользователя на всех страницах** (счётчик уведомлений, корзина, профиль в шапке, глобальные флаги сессии), храни в **одном контексте на `Client`**, а не в `createContext()` внутри переиспользуемого компонента (кнопка, badge, виджет в layout).
 
 Переиспользуемый UI только **читает** поля через `ContextRef` (см. **`prefer-context-ref-in-ui`**) или получает ref снаружи; **первичная загрузка** — у контекста сессии, один раз на клиента.
 
@@ -39,9 +39,11 @@ description: >-
 Переиспользуемый компонент создаёт свой контекст и грузит данные при каждом экземпляре:
 
 ```typescript
+import { createContext } from '@matreshka/bff/core';
+
 export class NotificationBell extends Button {
   constructor(options: NotificationBellOptions = {}) {
-    const context = new Context<{ unreadCount: number }>({
+    const context = createContext({
       preload: true,
       data: async () => ({ unreadCount: await countUnread() }),
     });
@@ -69,7 +71,7 @@ export class NotificationBell extends Button {
 ### 1. Один контекст на клиента (getter + кэш)
 
 ```typescript
-import { Client, Context, currentClient } from '@matreshka/bff/core';
+import { Client, Context, createContext, currentClient } from '@matreshka/bff/core';
 
 export type SessionUserContextValues = {
   unreadNotifications: number;
@@ -82,7 +84,7 @@ export function currentSessionUserContext(): Context<SessionUserContextValues> {
   const client = currentClient();
   let context = CACHE.get(client);
   if (context === undefined) {
-    context = new Context<SessionUserContextValues>({
+    context = createContext({
       preload: true,
       data: async () => ({
         unreadNotifications: await loadUnreadCount(),
@@ -161,7 +163,7 @@ currentSessionUserContext().set({ unreadNotifications: 0 });
 ## Чеклист агента
 
 - [ ] Данные нужны на **многих маршрутах** одного залогиненного клиента
-- [ ] Нет `new Context` в конструкторе **переиспользуемого** shell-виджета
+- [ ] Нет `createContext` в конструкторе **переиспользуемого** shell-виджета
 - [ ] Есть getter `current…Context()` с **одним экземпляром на `Client`**
 - [ ] `init()` — в **shell / layout boot**, не в конструкторе виджета
 - [ ] Виджет использует **refs** session context; действия на детальных экранах **пишут** в тот же context

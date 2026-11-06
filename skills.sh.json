@@ -12,6 +12,8 @@
         "context-ref-in-strings",
         "prefer-context-ref-in-ui",
         "strict-context-ref",
+        "preserve-context-generics",
+        "prefer-context-value-ref",
         "context-value-ref-in-api",
         "storage-vs-context",
         "context-subscribe-take-until-destroy",

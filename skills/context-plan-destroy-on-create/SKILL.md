@@ -12,7 +12,7 @@ description: >-
 
 ## Правило
 
-При **`new Context(...)`** сразу зафиксируй **момент удаления** из runtime: кто владеет данными, когда сценарий закончен, и **кто вызывает `context.destroy()`** (с проверкой `context.isDestroyed()`).
+При **`createContext(...)`** сразу зафиксируй **момент удаления** из runtime: кто владеет данными, когда сценарий закончен, и **кто вызывает `context.destroy()`** (с проверкой `context.isDestroyed()`).
 
 ## Default: auto-destroy при last client
 
@@ -31,7 +31,9 @@ description: >-
 - **Не** использовать для персональных данных без строгой изоляции.
 
 ```typescript
-new Context({
+import { createContext } from '@matreshka/bff/core';
+
+createContext({
   persistent: true,
   preload: true,
   data: async () => loadGlobalCatalog(),
@@ -63,7 +65,9 @@ new Context({
 
 ```typescript
 // ❌ persistent без плана ручного destroy
-export const cache = new Context({
+import { createContext } from '@matreshka/bff/core';
+
+export const cache = createContext({
   persistent: true,
   data: async () => loadHuge(),
 });
@@ -72,8 +76,10 @@ export const cache = new Context({
 
 ```typescript
 // ❌ Page context без раннего destroy (висит до last client, но last client может быть долго)
+import { createContext } from '@matreshka/bff/core';
+
 export class OrdersPage extends Page {
-  context = new Context({ preload: true, data: async () => loadOrders() });
+  context = createContext({ preload: true, data: async () => loadOrders() });
 }
 ```
 

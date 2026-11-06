@@ -20,7 +20,9 @@ description: >-
 **1. Мягкое поле + валидация на submit**
 
 ```typescript
-context = new Context({
+import { createContext } from '@matreshka/bff/core';
+
+context = createContext({
   schema: z.strictObject({
     emailDraft: z.string(),
     email: z.string().email().optional(),

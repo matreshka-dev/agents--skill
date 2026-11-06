@@ -65,10 +65,12 @@ export function destroyContextWithEntry<T extends JsonObject>(
 ## Шаблон (Page / Dialog)
 
 ```typescript
+import { createContext } from '@matreshka/bff/core';
+
 export class ExamplePage extends Page {
   context = destroyContextWithEntry(
     this,
-    new Context({ /* preload, data, initDataCallback */ }),
+    createContext({ /* preload, data, initDataCallback */ }),
   );
 
   async boot(): Promise<unknown> {
@@ -87,7 +89,7 @@ protected entryContext<T extends JsonObject>(context: Context<T>): Context<T> {
 }
 
 // ...
-context = this.entryContext(new Context({ ... }));
+context = this.entryContext(createContext({ ... }));
 ```
 
 ## Dialog
@@ -104,8 +106,10 @@ context = this.entryContext(new Context({ ... }));
 ## Антипаттерн
 
 ```typescript
+import { createContext } from '@matreshka/bff/core';
+
 export class LeakyPage extends Page {
-  context = new Context({ preload: true, /* ... */ });
+  context = createContext({ preload: true, /* ... */ });
   // ❌ нет подписки на this.stopUsing$ → destroy не вызывается при уходе
 }
 ```

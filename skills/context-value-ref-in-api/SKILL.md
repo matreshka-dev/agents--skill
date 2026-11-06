@@ -110,6 +110,7 @@ function resetLoading(loadingRef: ContextValueRef<boolean | undefined>) {
 
 ## Связанные скиллы
 
+- [prefer-context-value-ref](../prefer-context-value-ref/SKILL.md) — когда `ContextValueRef` вместо целого `Context` или фейкового `ContextRef`
 - [strict-context-ref](../strict-context-ref/SKILL.md) — `ContextRef<C, P>` на странице, типы item ref в `forEach`, без `any`
 - [prefer-context-ref-in-ui](../prefer-context-ref-in-ui/SKILL.md) — ref в props UI, не `get()` в дереве
 - [instant-ui-set-context-value](../instant-ui-set-context-value/SKILL.md) — `ref.local.set` / `context.local.set` в actions

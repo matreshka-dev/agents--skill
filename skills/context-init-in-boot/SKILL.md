@@ -82,7 +82,9 @@ protected content() {
 ```
 
 ```typescript
-context = new Context({
+import { createContext } from '@matreshka/bff/core';
+
+context = createContext({
   preload: true,
   data: async () => ({ cart: [] }),
 });

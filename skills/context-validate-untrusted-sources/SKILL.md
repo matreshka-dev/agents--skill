@@ -74,7 +74,9 @@ description: >-
 Клиентские ключи и серверные поля в одном контексте:
 
 ```typescript
-context = new Context({
+import { createContext } from '@matreshka/bff/core';
+
+context = createContext({
   schema: z.object({
     query: z.string(),
     quantity: z.number(),
@@ -102,7 +104,9 @@ this.context.set({ role: "editor" });
 Контекст только с серверными записями:
 
 ```typescript
-context = new Context({
+import { createContext } from '@matreshka/bff/core';
+
+context = createContext({
   data: async () => ({ title: "Счёт", balance: 0 }),
 });
 
@@ -112,12 +116,14 @@ text(this.context.ref("title"));
 Ответ внешнего API с полями, которые клиент менять не должен:
 
 ```typescript
+import { createContext } from '@matreshka/bff/core';
+
 const deliverySchema = z.object({
   status: z.enum(["pending", "shipped", "delivered"]),
   trackingNumber: z.string(),
 });
 
-context = new Context({
+context = createContext({
   data: async () => ({
     status: "pending",
     trackingNumber: "",
@@ -138,7 +144,9 @@ this.context.set(delivery);
 Клиент пишет ключ, которого нет в схеме:
 
 ```typescript
-context = new Context({
+import { createContext } from '@matreshka/bff/core';
+
+context = createContext({
   data: async () => ({ query: "", role: "viewer" }),
 });
 
