@@ -14,6 +14,7 @@
         "strict-context-ref",
         "preserve-context-generics",
         "prefer-context-value-ref",
+        "writable-context-ref-for-inputs-and-local-actions",
         "context-value-ref-in-api",
         "storage-vs-context",
         "context-subscribe-take-until-destroy",

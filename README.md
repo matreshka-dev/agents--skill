@@ -43,6 +43,7 @@ npx skills add . --agent cursor
 | `strict-context-ref`                           | `ContextRef<C, P>` на странице, без `any`                                               |
 | `preserve-context-generics`                    | Generic-параметры функции вместо `Context` / `ContextRef` / `any`                       |
 | `prefer-context-value-ref`                     | `ContextValueRef` / `ContextArrayRef`, а не целый `Context` или фейковый `ContextRef`   |
+| `writable-context-ref-for-inputs-and-local-actions` | Writable ref-контракты для инпутов и `local`-действий (`set/toggle/inc/dec`)       |
 | `context-value-ref-in-api`                     | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов                             |
 | `storage-vs-context`                           | Клиентский `storage` vs состояние сценария в `Context`                                  |
 | `context-subscribe-take-until-destroy`         | `watch()` с `takeUntil(destroy$)` на entry                                              |
