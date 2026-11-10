@@ -57,6 +57,11 @@
       "skills": ["webmcp-tool-name-and-input"]
     },
     {
+      "title": "Архитектура (опционально)",
+      "description": "Опциональный скилл: задаёт архитектуру TypeScript-приложения по умолчанию.",
+      "skills": ["application-architecture"]
+    },
+    {
       "title": "Layout и overlays",
       "description": "Flex, safe area, grid, RTL, overlays страницы.",
       "skills": [

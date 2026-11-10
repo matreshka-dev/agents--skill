@@ -32,25 +32,25 @@ npx skills add . --agent cursor
 
 ### Context и состояние
 
-| Скилл                                          | Назначение                                                                              |
-| ---------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `context-init-in-boot`                         | Preload / lazy / `init()` в `boot()` при `get()` в рендере                              |
-| `context-plan-destroy-on-create`               | План `destroy()`; default auto при last client; `persistent: true` и ручная инвалидация |
-| `context-destroy-with-entry`                   | `context.destroy()` по `stopUsing$` entry (Page/Dialog)                                 |
-| `client-scoped-context-for-shared-ui`          | Один Context на Client для chrome (badge, корзина)                                      |
-| `context-ref-in-strings`                       | `ContextRef` в шаблонных строках (`toString()`, `strictRef`)                            |
-| `prefer-context-ref-in-ui`                     | `ContextRef` в props UI вместо `get()` в аргументах                                     |
-| `strict-context-ref`                           | `ContextRef<C, P>` на странице, без `any`                                               |
-| `preserve-context-generics`                    | Generic-параметры функции вместо `Context` / `ContextRef` / `any`                       |
-| `prefer-context-value-ref`                     | `ContextValueRef` / `ContextArrayRef`, а не целый `Context` или фейковый `ContextRef`   |
-| `writable-context-ref-for-inputs-and-local-actions` | Writable ref-контракты для инпутов и `local`-действий (`set/toggle/inc/dec`)       |
-| `context-value-ref-in-api`                     | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов                             |
-| `storage-vs-context`                           | Клиентский `storage` vs состояние сценария в `Context`                                  |
-| `context-subscribe-take-until-destroy`         | `watch()` с `takeUntil(destroy$)` на entry                                              |
-| `context-zod-draft-not-live-strict`            | Zod: draft vs strict на живом вводе                                                     |
-| `context-validate-untrusted-sources`           | Zod для данных из недоверенных источников (клиент, внешний API)                         |
-| `context-date-iso-timezone`                    | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)                                 |
-| `prefer-context-get-set-over-replace-snapshot` | `get` / `set(patch)` вместо `snapshot` / `replace` для точечных правок                  |
+| Скилл                                               | Назначение                                                                              |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `context-init-in-boot`                              | Preload / lazy / `init()` в `boot()` при `get()` в рендере                              |
+| `context-plan-destroy-on-create`                    | План `destroy()`; default auto при last client; `persistent: true` и ручная инвалидация |
+| `context-destroy-with-entry`                        | `context.destroy()` по `stopUsing$` entry (Page/Dialog)                                 |
+| `client-scoped-context-for-shared-ui`               | Один Context на Client для chrome (badge, корзина)                                      |
+| `context-ref-in-strings`                            | `ContextRef` в шаблонных строках (`toString()`, `strictRef`)                            |
+| `prefer-context-ref-in-ui`                          | `ContextRef` в props UI вместо `get()` в аргументах                                     |
+| `strict-context-ref`                                | `ContextRef<C, P>` на странице, без `any`                                               |
+| `preserve-context-generics`                         | Generic-параметры функции вместо `Context` / `ContextRef` / `any`                       |
+| `prefer-context-value-ref`                          | `ContextValueRef` / `ContextArrayRef`, а не целый `Context` или фейковый `ContextRef`   |
+| `writable-context-ref-for-inputs-and-local-actions` | Writable ref-контракты для инпутов и `local`-действий (`set/toggle/inc/dec`)            |
+| `context-value-ref-in-api`                          | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов                             |
+| `storage-vs-context`                                | Клиентский `storage` vs состояние сценария в `Context`                                  |
+| `context-subscribe-take-until-destroy`              | `watch()` с `takeUntil(destroy$)` на entry                                              |
+| `context-zod-draft-not-live-strict`                 | Zod: draft vs strict на живом вводе                                                     |
+| `context-validate-untrusted-sources`                | Zod для данных из недоверенных источников (клиент, внешний API)                         |
+| `context-date-iso-timezone`                         | Даты в Context: ISO с поясом (`toJSON` / `toISOString`)                                 |
+| `prefer-context-get-set-over-replace-snapshot`      | `get` / `set(patch)` вместо `snapshot` / `replace` для точечных правок                  |
 
 ### Компоненты, условия, списки
 
@@ -66,25 +66,25 @@ npx skills add . --agent cursor
 
 ### События, формы, навигация
 
-| Скилл                               | Назначение                                                    |
-| ----------------------------------- | ------------------------------------------------------------- |
-| `form-submit-shared-handler`        | Общий handler для `onSubmit` и `onClick`                      |
-| `prevent-duplicate-form-submit`     | `loading` + `ref.local.set` + conditional `ServerAction`      |
-| `return-server-action-promise`      | Return/await Promise в server handlers                        |
-| `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте  |
-| `prefer-local-actions`              | Локальные действия компонентам/инстансам и глобальный `local` |
+| Скилл                               | Назначение                                                      |
+| ----------------------------------- | --------------------------------------------------------------- |
+| `form-submit-shared-handler`        | Общий handler для `onSubmit` и `onClick`                        |
+| `prevent-duplicate-form-submit`     | `loading` + `ref.local.set` + conditional `ServerAction`        |
+| `return-server-action-promise`      | Return/await Promise в server handlers                          |
+| `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте    |
+| `prefer-local-actions`              | Локальные действия компонентам/инстансам и глобальный `local`   |
 | `local-actions-boundaries`          | Граница LocalAction и server handler; не `*.local.*` в callback |
-| `instant-ui-set-context-value`      | `context.local` / `ref.local` для мгновенного UI              |
-| `link-vs-navigate`                  | `link.value` vs `navigate()` в `onClick`                      |
-| `route-guard-return-undefined`      | Guard через `undefined` и fallback `**`                       |
-| `dialog-vs-popover-platform`        | `showDialog` vs `showPopover` (source / `{ anchor, source }`) |
-| `popover-viewport-size-limit`       | Лимит popover по экрану; `positionArea` vs 100vh/100vw        |
+| `instant-ui-set-context-value`      | `context.local` / `ref.local` для мгновенного UI                |
+| `link-vs-navigate`                  | `link.value` vs `navigate()` в `onClick`                        |
+| `route-guard-return-undefined`      | Guard через `undefined` и fallback `**`                         |
+| `dialog-vs-popover-platform`        | `showDialog` vs `showPopover` (source / `{ anchor, source }`)   |
+| `popover-viewport-size-limit`       | Лимит popover по экрану; `positionArea` vs 100vh/100vw          |
 
 ### WebMCP
 
-| Скилл                          | Назначение                                                                                          |
-| ------------------------------ | --------------------------------------------------------------------------------------------------- |
-| `webmcp-tool-name-and-input`   | Имя из `[A-Za-z0-9_-]`; Zod `inputSchema` по UI; `conditions` только для видимости; ждать команды платформы и контекст до ответа агенту |
+| Скилл                        | Назначение                                                                                                                              |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `webmcp-tool-name-and-input` | Имя из `[A-Za-z0-9_-]`; Zod `inputSchema` по UI; `conditions` только для видимости; ждать команды платформы и контекст до ответа агенту |
 
 ### Layout и overlays
 
@@ -97,6 +97,18 @@ npx skills add . --agent cursor
 | `safe-area-for-page-dialog-overlays`   | Safe area в Page/Dialog/overlays                        |
 | `table-layout-with-grid-subgrid`       | Таблица через `grid` + `subgrid`                        |
 | `page-overlays-method-vs-set-overlays` | `Page.overlays()` vs `setOverlays()` в `boot()`         |
+
+### Архитектура (опционально)
+
+`application-architecture` не входит в базовый набор. Скилл опциональный: подключай его, если нужно задать агенту архитектуру по умолчанию для TypeScript-приложений на Matreshka (приложения, Features, Entry, Context, тема, маршрутизация). Проект со своей структурой может обойтись без него.
+
+```bash
+npx skills add matreshka-dev/agents--skill --skill application-architecture
+```
+
+| Скилл                      | Назначение                                             |
+| -------------------------- | ------------------------------------------------------ |
+| `application-architecture` | Опционально задаёт архитектуру приложения по умолчанию |
 
 ## Структура
 
