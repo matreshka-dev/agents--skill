@@ -34,9 +34,12 @@ round-trip.
 Для мгновенного изменения клиентского зеркала контекста используй:
 
 ```ts
-button({ onClick: this.context.local.set({ loading: true }) }, [
-  text("Загрузить"),
-]);
+button(
+  {
+    onClick: this.context.local.set({ loading: true }, { sync: false }),
+  },
+  [text("Загрузить")],
+);
 
 button({ onClick: this.context.local.toggle("enabled") }, [
   text("Переключить"),
@@ -60,8 +63,9 @@ button({ onClick: quantityRef.local.dec() }, [text("Уменьшить")]);
 - `ref.local.set(value)` записывает значение конкретного ref.
 - `toggle` предназначен для boolean-полей.
 - `inc`/`dec` предназначены для числовых полей; шаг по умолчанию равен `1`.
-- Обновление происходит сразу на клиенте, после чего клиент синхронизирует
-  изменение контекста с BFF.
+- По умолчанию обновление сразу на клиенте, затем клиент шлёт `context-values`
+  на BFF (путь в `schema`). `{ sync: false }` пишет только зеркало — когда
+  серверу значение не нужно; см. **`context-local-sync-false`**.
 
 Не заменяй `context.set` или `ref.set` на `.local`, если изменение должно
 произойти именно на BFF в серверном обработчике.
@@ -86,12 +90,15 @@ const map = new Map({
   zoom: 12,
 });
 
-button({
-  onClick: ({ instance }) => [
-    instance.local.setZoom(8),       // только карта, по которой кликнули
-    instance.component.local.zoomIn(), // все instances этого map-компонента
-  ],
-}, [text("Масштаб")]);
+button(
+  {
+    onClick: ({ instance }) => [
+      instance.local.setZoom(8), // только карта, по которой кликнули
+      instance.component.local.zoomIn(), // все instances этого map-компонента
+    ],
+  },
+  [text("Масштаб")],
+);
 ```
 
 До клика, когда нужен известный инстанс, используй `createInstance()` и положи
@@ -113,7 +120,7 @@ button({
 Для закрытия entry выбирай область явно:
 
 ```ts
-instance.local.close();           // один dialog/popover
+instance.local.close(); // один dialog/popover
 instance.component.local.close(); // все instances этого компонента в текущем клиенте
 ```
 
@@ -134,11 +141,12 @@ instance.component.local.close(); // все instances этого компоне�
 ```ts
 import { local } from "@matreshka/bff/core";
 
-button({
-  onClick: [
-    local.writeTextToClipboard("Скопировано"),
-  ],
-}, [text("Скопировать")]);
+button(
+  {
+    onClick: [local.writeTextToClipboard("Скопировано")],
+  },
+  [text("Скопировать")],
+);
 ```
 
 `local.animate(...)` также является глобальным локальным действием; ему
@@ -153,19 +161,23 @@ button({
 запустить сразу, а серверную работу оставить `ServerAction`:
 
 ```ts
-button({
-  onClick: [
-    this.context.local.set({ loading: true }),
-    async () => {
-      await this.orders.submit();
-    },
-  ],
-}, [text("Отправить")]);
+button(
+  {
+    onClick: [
+      this.context.local.set({ loading: true }, { sync: false }),
+      async () => {
+        await this.orders.submit();
+        this.context.set("loading", false);
+      },
+    ],
+  },
+  [text("Отправить")],
+);
 ```
 
 Для полноценной формы с loading и защитой от повторной отправки используй
-паттерн из `prevent-duplicate-form-submit`: локально меняй UI, но критические
-проверки выполняй в серверном обработчике.
+паттерн из `prevent-duplicate-form-submit` (`loading` с `{ sync: false }`):
+локально меняй UI, но критические проверки выполняй в серверном обработчике.
 
 ## Проверка перед реализацией
 
@@ -181,5 +193,6 @@ button({
 
 - `instant-ui-set-context-value` — подробные операции `context.local` и
   `ref.local`.
+- `context-local-sync-false` — когда `{ sync: false }` и ключ вне schema.
 - `server-action-validate-in-handler` — проверки прав и инвариантов в BFF.
 - `prevent-duplicate-form-submit` — loading и защита от повторной отправки формы.

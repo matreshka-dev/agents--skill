@@ -15,14 +15,14 @@ description: >-
 - Для сигнатур «по значению» без записи используй `ContextRefOfValue<T>`.
 - Для сигнатур записи используй `WritableContextRefOfValue<T>`.
 
-`WritableContextRefOfValue<T>` не требует generic по ref (`R`): writable-принадлежность выражена структурно (`local.set` и другие `local.*` есть только у writable-путей), а `local` выводится из `ContextRef.local`. Ref с путём вне writable-путей schema не пройдёт проверку, новые методы `local` подхватываются автоматически.
+`WritableContextRefOfValue<T>` не требует generic по ref (`R`): writable-принадлежность выражена структурно (`local.set` без `{ sync: false }` есть только у writable-путей), а `local` выводится из `ContextRef.local`. Ref с путём вне схемы не пройдёт проверку вызова без флага. Новые методы `local` подхватываются автоматически.
 
 ## Когда какой тип использовать
 
 | Сценарий                                                                | Тип                            |
 | ----------------------------------------------------------------------- | ------------------------------ |
 | Нужен ref по типу значения, запись не обязательна                       | `ContextRefOfValue<T>`         |
-| Нужен ref, который точно можно менять из клиента (input, `ref.local.*`) | `WritableContextRefOfValue<T>` |
+| Нужен ref, который синхронизируется с BFF (input, `ref.local.*` без `sync: false`) | `WritableContextRefOfValue<T>` |
 
 ## Базовые примеры
 
@@ -57,15 +57,24 @@ function amountInput(ref: WritableContextRefOfValue<number | undefined>) {
 
 Если нужен только read-only вывод в UI, используй output и обычный `ContextRefOfValue<T>`.
 
-## Local-действия Context: только writable пути
+## Local-действия Context
 
-`ref.local.set(...)`, `ref.local.toggle()`, `ref.local.inc(...)`, `ref.local.dec(...)` вызываются на writable ref.
+`ref.local.set(...)`, `ref.local.toggle()`, `ref.local.inc(...)`, `ref.local.dec(...)` без `{ sync: false }` вызываются на writable ref: путь есть в схеме и уходит на BFF.
+
+`{ sync: false }` пишет только клиентское зеркало. Для этого вызова хватает ref по типу значения, путь в схеме не нужен. `WritableContextRefOfValue` по-прежнему означает, что `local.*` можно вызвать без этого флага. Когда ставить `sync: false` — **`context-local-sync-false`**.
 
 ```typescript
-function finishSubmit(
-  loadingRef: WritableContextRefOfValue<boolean | undefined>,
-) {
-  return loadingRef.local.set(false);
+// Client-only loading lock: local с sync: false; сброс на BFF — ref.set
+function lockSubmit(loadingRef: ContextRefOfValue<boolean | undefined>) {
+  return loadingRef.local.set(true, { sync: false });
+}
+
+function unlockSubmit(loadingRef: ContextRefOfValue<boolean | undefined>) {
+  return loadingRef.set(false);
+}
+
+function hover(hoveredRef: ContextRefOfValue<boolean | undefined>) {
+  return hoveredRef.local.set(true, { sync: false });
 }
 ```
 
@@ -101,3 +110,4 @@ function oldStyle<R extends AnySchemaContextRef>(
 - [prefer-context-value-ref](../prefer-context-value-ref/SKILL.md)
 - [context-value-ref-in-api](../context-value-ref-in-api/SKILL.md)
 - [instant-ui-set-context-value](../instant-ui-set-context-value/SKILL.md)
+- [context-local-sync-false](../context-local-sync-false/SKILL.md)

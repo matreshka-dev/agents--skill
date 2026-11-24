@@ -44,6 +44,7 @@ npx skills add . --agent cursor
 | `preserve-context-generics`                         | Generic-параметры функции вместо `Context` / `ContextRef` / `any`                       |
 | `prefer-context-value-ref`                          | `ContextValueRef` / `ContextArrayRef`, а не целый `Context` или фейковый `ContextRef`   |
 | `writable-context-ref-for-inputs-and-local-actions` | Writable ref-контракты для инпутов и `local`-действий (`set/toggle/inc/dec`)            |
+| `context-local-sync-false`                          | `{ sync: false }` для client-only UI / loading; ключ вне schema                         |
 | `context-value-ref-in-api`                          | `ContextValueRef` / `ContextArrayRef` в сигнатурах хелперов                             |
 | `storage-vs-context`                                | Клиентский `storage` vs состояние сценария в `Context`                                  |
 | `context-subscribe-take-until-destroy`              | `watch()` с `takeUntil(destroy$)` на entry                                              |
@@ -69,7 +70,7 @@ npx skills add . --agent cursor
 | Скилл                               | Назначение                                                      |
 | ----------------------------------- | --------------------------------------------------------------- |
 | `form-submit-shared-handler`        | Общий handler для `onSubmit` и `onClick`                        |
-| `prevent-duplicate-form-submit`     | `loading` + `ref.local.set` + conditional `ServerAction`        |
+| `prevent-duplicate-form-submit`     | `loading` + `local.set(..., { sync: false })` + ServerAction    |
 | `return-server-action-promise`      | Return/await Promise в server handlers                          |
 | `server-action-validate-in-handler` | Бизнес-проверки в handler, не только `conditions` на клиенте    |
 | `prefer-local-actions`              | Локальные действия компонентам/инстансам и глобальный `local`   |

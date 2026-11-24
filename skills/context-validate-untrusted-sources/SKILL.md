@@ -3,12 +3,12 @@ name: context-validate-untrusted-sources
 description: >-
   Requires Zod at the Matreshka BFF boundary for data from untrusted sources:
   client context-values and external API or service payloads. Context schema
-  lists keys the client may write (inputs, context.local / ref.local) and
-  checks their types. Server-only keys stay out of that schema; validate
-  external responses with a separate Zod schema when the client must not write
-  those fields. Trusted server writes rely on TypeScript. Use when adding
-  Context, inputs, local context updates, third-party data, or reviewing
-  incoming values.
+  lists keys the client may write (inputs, context.local / ref.local without
+  sync: false) and checks their types. Paths with { sync: false } stay out of
+  schema. Server-only keys stay out of that schema; validate external responses
+  with a separate Zod schema when the client must not write those fields.
+  Trusted server writes rely on TypeScript. Use when adding Context, inputs,
+  local context updates, third-party data, or reviewing incoming values.
 ---
 
 # Zod для данных из недоверенных источников (Matreshka BFF)
@@ -25,16 +25,16 @@ description: >-
 
 Клиент — один из недоверенных источников. Поле `schema` у `Context` для него делает две вещи: перечисляет ключи, которые клиенту разрешено менять, и проверяет тип значения. Входящее `context-values` обновляет только ключи из этой схемы.
 
-Ключ обязан быть в `schema`, если клиент его меняет:
+Ключ обязан быть в `schema`, если клиент его меняет **и** изменение уходит на BFF:
 
 - компонент пишет в контекст. Сейчас это input: `textInput`, `passwordInput`, `numberInput`, `textarea`, `textEditor` через `ref`;
-- ключ записан локальным действием `context.local.set` / `toggle` / `inc` / `dec` или `ref.local.set` / `toggle` / `inc` / `dec`.
+- ключ записан локальным действием `context.local.set` / `toggle` / `inc` / `dec` или `ref.local.set` / `toggle` / `inc` / `dec` **без** `{ sync: false }`.
 
-Локальное действие сразу обновляет зеркало контекста на клиенте и затем синхронизирует его с BFF тем же `context-values`.
+По умолчанию локальное действие сразу обновляет зеркало на клиенте и затем синхронизирует его с BFF тем же `context-values`. С `{ sync: false }` пишется только зеркало: `context-values` не отправляется, путь в `schema` **не** включай. Сервер при этом может писать тот же ключ (`ref.set` / `context.set`) и доставлять значение клиенту. Критерий — **`context-local-sync-false`**.
 
-Если один ключ меняют и клиент, и сервер, он всё равно входит в `schema`. Наличие ключа в схеме серверную запись не ограничивает.
+Если один ключ меняют и клиент (с sync на BFF), и сервер, он всё равно входит в `schema`. Наличие ключа в схеме серверную запись не ограничивает.
 
-Ключ, который пишет только BFF, в `schema` не включай. Чтение ref (`text`, `when.equals` и другие conditions) клиентскую запись не создаёт. Контекст без клиентских записей оставляй без `schema`.
+Ключ, который пишет только BFF, или ключ только с `{ sync: false }` на клиенте, в `schema` не включай. Чтение ref (`text`, `when.equals` и другие conditions) клиентскую запись не создаёт. Контекст без клиентских записей на BFF оставляй без `schema`.
 
 ### Почему список ключей явный
 
@@ -163,12 +163,13 @@ textInput({ ref: this.context.ref("query") });
 
 - [ ] Данные клиента, стороннего API и других недоверенных источников проверены Zod до использования
 - [ ] Каждый ref компонента, пишущего в контекст (input и аналоги), есть в `schema`
-- [ ] Каждый путь `context.local` / `ref.local` (`set`, `toggle`, `inc`, `dec`) есть в `schema`
-- [ ] Тип в схеме принимает значения, которые контрол или local action отправляет
+- [ ] Каждый путь `context.local` / `ref.local` **без** `{ sync: false }` есть в `schema`
+- [ ] Пути только с `{ sync: false }` в `schema` **не** добавлены
+- [ ] Тип в схеме принимает значения, которые контрол или syncing local action отправляет
 - [ ] Вложенный путь описан объектом или массивом в схеме
 - [ ] Ключи только BFF в `schema` не добавлены
 - [ ] Поля внешнего ответа, которые клиент менять не должен, проверены отдельной схемой, а не через `schema` Context
-- [ ] Контекст без клиентских записей оставлен без `schema`
+- [ ] Контекст без клиентских записей на BFF оставлен без `schema`
 - [ ] Секреты и данные, которые клиент не должен видеть, не лежат в сериализуемом контексте
 - [ ] Бизнес-проверка формата осталась в server handler
 
@@ -176,4 +177,5 @@ textInput({ ref: this.context.ref("query") });
 
 - **`context-zod-draft-not-live-strict`** — мягкая схема на живом вводе, строгая проверка на submit
 - **`instant-ui-set-context-value`** — `context.local` / `ref.local` и синхронизация `context-values`
+- **`context-local-sync-false`** — когда `{ sync: false }` и ключ вне schema
 - **`server-action-validate-in-handler`** — бизнес- и auth-проверки в обработчике, не в типах контекста
